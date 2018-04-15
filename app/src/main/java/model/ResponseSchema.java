@@ -1,8 +1,5 @@
 package model;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-
 import org.jetbrains.annotations.NotNull;
 
 public class ResponseSchema {
@@ -26,6 +23,7 @@ public class ResponseSchema {
         this.weather = b.weather;
         this.mainData = b.mainData;
         this.wind = b.wind;
+        this.sys = b.sys;
         this.base = b.base;
         this.clouds = b.clouds;
         this.rain = b.rain;
@@ -106,6 +104,11 @@ public class ResponseSchema {
             return this;
         }
 
+        public Builder addTimeOfDataCalc(long timeOfDataCalc) {
+            this.timeOfDataCalc = timeOfDataCalc;
+            return this;
+        }
+
         public ResponseSchema build() {
             return new ResponseSchema(this);
         }
@@ -180,62 +183,68 @@ public class ResponseSchema {
             this.grnd_level = grnd_level;
         }
 
-        public Float getTemp() {
+        public float getTemp() {
             return temp;
         }
 
-        public Integer getPressure() {
+        public int getPressure() {
             return pressure;
         }
 
-        public Integer getHumidity() {
+        public int getHumidity() {
             return humidity;
         }
 
-        public Float getTemp_min() {
+        public float getTemp_min() {
             return temp_min;
         }
 
-        public Float getTemp_max() {
+        public float getTemp_max() {
             return temp_max;
         }
 
-        public Integer getSea_level() {
+        public int getSea_level() {
             return sea_level;
         }
 
-        public Integer getGrnd_level() {
+        public int getGrnd_level() {
             return grnd_level;
         }
     }
 
     public static class Wind {
-        private Float speed;    //Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
-        private Integer deg;    //Wind direction, degrees (meteorological)
+        private float speed;    //Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
+        private int deg;    //Wind direction, degrees (meteorological)
+        private String type;
 
-        public Wind(float speed, int deg) {
+        public Wind(float speed, String type, int deg) {
             this.speed = speed;
             this.deg = deg;
+            this.type = type;
         }
 
-        public Float getSpeed() {
+        public float getSpeed() {
             return speed;
         }
 
-        public Integer getDeg() {
+        public int getDeg() {
             return deg;
+        }
+
+        public String getType() {
+            return type;
         }
     }
 
     public static class Sys {
-        private Byte type;      //Internal parameter
-        private Integer id;     // Internal parameter
+        private int type;      //Internal parameter
+        private int id;     // Internal parameter
         private String message; //Internal parameter
-        private Byte country;   // Country code (GB, JP etc.)
-        private Long sunrise;   //sunrise time, unix, UTC
-        private Long sunset;    //Sunset time, unix, UTC
+        private int country;   // Country code (GB, JP etc.)
+        private long sunrise;   //sunrise time, unix, UTC
+        private long sunset;    //Sunset time, unix, UTC
 
-        public Sys(Byte type, Integer id, String message, Byte country, Long sunrise, Long sunset) {
+        public Sys(int type, int id, String message, int country, long sunrise, long sunset) {
             this.type = type;
             this.id = id;
             this.message = message;
@@ -244,11 +253,11 @@ public class ResponseSchema {
             this.sunset = sunset;
         }
 
-        public Byte getType() {
+        public int getType() {
             return type;
         }
 
-        public Integer getId() {
+        public int getId() {
             return id;
         }
 
@@ -256,15 +265,15 @@ public class ResponseSchema {
             return message;
         }
 
-        public Byte getCountry() {
+        public int getCountry() {
             return country;
         }
 
-        public Long getSunrise() {
+        public long getSunrise() {
             return sunrise;
         }
 
-        public Long getSunset() {
+        public long getSunset() {
             return sunset;
         }
     }

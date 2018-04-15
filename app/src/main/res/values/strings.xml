@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Weather outlook</string>
+    <string name="updated">Обновлено</string>
+    <string name="temperature">Температура</string>
+    <string name="str_sunset">Закат</string>
+    <string name="str_sunrise">Рассвет</string>
+    <string name="str_humidity">Влажность</string>
+    <string name="str_pressure">Давление</string>
 </resources>
