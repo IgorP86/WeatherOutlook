@@ -6,4 +6,14 @@
     <string name="str_sunrise">Рассвет</string>
     <string name="str_humidity">Влажность</string>
     <string name="str_pressure">Давление</string>
+    <string name="appID">f45d2f1d63b29740ba59f4999f158e77</string>
+    <string name="baseURL">http://api.openweathermap.org/</string>
+    <string name="tempCelsius">metric</string>
+    <string name="tempFahrenheit">imperial</string>
+    <string name="dotPNG">.png</string>
+    <string name="HTTP_ICO_LIST">http://openweathermap.org/img/w/</string>
+    <string name="city_select">Выбрать город</string>
+    <string name="str_city_name">cityName</string>
+    <string name="label_for_cities_selector">Выберете город</string>
+
 </resources>
