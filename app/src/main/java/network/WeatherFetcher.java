@@ -1,4 +1,4 @@
-package com.igorr.weatheroutlook;
+package network;
 
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -7,12 +7,12 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.igorr.weatheroutlook.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,5 +1,7 @@
 package model;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,22 +21,35 @@ public class CitiesRU {
     private CitiesRU() {
         if (citiesRu != null)
             citiesRu.clear();
-        citiesRu.add(new City("511565", "Пенза"));
-        citiesRu.add(new City("520555", "Нижний Новгород"));
-        citiesRu.add(new City("2013364", "Владимр"));
-        citiesRu.add(new City("498817", "Санкт_Петербург"));
-        citiesRu.add(new City("551487", "Казань"));
-        citiesRu.add(new City("2013348", "Владивосток"));
+
+        citiesRu.add(new City("511565", "Пенза", "Penza", "RU"));
+        citiesRu.add(new City("520555", "Нижний Новгород", "Nizhniy Novgorod", "RU"));
+        citiesRu.add(new City("2013364", "Владимр", "Vladimir", "RU"));
+        citiesRu.add(new City("498817", "Санкт_Петербург", "Saint Petersburg", "RU"));
+        citiesRu.add(new City("551487", "Казань", "Kazan", "RU"));
+        citiesRu.add(new City("2013348", "Владивосток", "Vladivostok", "RU"));
+        citiesRu.add(new City("524901", "Москва", "Moscow", "RU"));
     }
 
     public static List<City> getCitiesRu() {
         return citiesRu;
     }
 
+    @Nullable
     public static String findCityById(long cityId) {
         for (City c : citiesRu) {
             if (Long.parseLong(c.cityId) == cityId) {
-                return c.name;
+                return c.cityName;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static String getAlterName(String cityName) {
+        for (City c : citiesRu) {
+            if (c.getCityName().equals(cityName)) {
+                return c.alternateName;
             }
         }
         return null;
@@ -42,19 +57,29 @@ public class CitiesRU {
 
     public static class City {
         private String cityId;
-        private String name;
-
-        private City(String cityId, String name) {
+        private String cityName;
+        /**
+         * имя города на английском
+         */
+        private String alternateName;
+        private String country;
+        public City(String cityId, String cityName, String alternateName, String country) {
             this.cityId = cityId;
-            this.name = name;
+            this.cityName = cityName;
+            this.alternateName = alternateName;
+            this.country = country;
+        }
+
+        public String getCountry() {
+            return country;
         }
 
         public String getCityId() {
             return cityId;
         }
 
-        public String getName() {
-            return name;
+        public String getCityName() {
+            return cityName;
         }
     }
 }

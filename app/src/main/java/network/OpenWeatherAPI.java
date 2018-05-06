@@ -1,8 +1,9 @@
-package com.igorr.weatheroutlook;
+package network;
 
 import model.ResponseSchema;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -13,7 +14,4 @@ public interface OpenWeatherAPI {
             @Query("id") String idCity,
             @Query("appid") String appID,
             @Query("units") String tempFormat);
-    @GET("data/2.5/weather")
-
-    Call<Byte> getRespons();
 }

@@ -24,6 +24,10 @@
             android:name=".ActivitySelector"
             android:label="@string/label_for_cities_selector"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name="oauth.share.ActivityVKShare"
+            android:label="@string/str_authorization"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
