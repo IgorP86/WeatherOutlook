@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import model.ResponseSchema;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import presenters.PresentData;
@@ -78,6 +79,8 @@ public class WeatherFetcher {
                       public void onResponse(@NonNull Call<ResponseSchema> call, @NonNull Response<ResponseSchema> response) {
                           if (response.isSuccessful()) {
                               responseSchema = response.body();
+
+                              //получив json, загружаю картинку
                               new OkHttpClient().newCall(
                                       new Request.Builder().url(context.getString(R.string.HTTP_ICO_LIST)
                                               + responseSchema.getWeather()[0].getIcon() + context.getString(R.string.dotPNG))
@@ -121,32 +124,5 @@ public class WeatherFetcher {
                       }
                   }
         );
-    }
-
-    //Пока пускай тут полежит
-    public byte[] getUrlBytes(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            InputStream in = connection.getInputStream();
-
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new IOException(connection.getResponseMessage() + " with " + urlSpec);
-            }
-
-            int bytesRead;
-            byte[] byteBuffer = new byte[1024];
-
-            while ((bytesRead = in.read(byteBuffer)) > 0) {
-                byteArrayOutputStream.write(byteBuffer, 0, bytesRead);
-            }
-
-            byteArrayOutputStream.close();
-            return byteArrayOutputStream.toByteArray();
-        } finally {
-            connection.disconnect();
-        }
     }
 }

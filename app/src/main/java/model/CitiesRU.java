@@ -63,6 +63,7 @@ public class CitiesRU {
          */
         private String alternateName;
         private String country;
+
         public City(String cityId, String cityName, String alternateName, String country) {
             this.cityId = cityId;
             this.cityName = cityName;

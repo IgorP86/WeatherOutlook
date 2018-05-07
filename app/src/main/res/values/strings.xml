@@ -20,5 +20,7 @@
     <string name="str_authorization">Авторизация</string>
     <string name="url_vk_share_php">https://vk.com/share.php?url=</string>
     <string name="url_openweathermap">https://openweathermap.org/city/</string>
+    <string name="share_successfully">Запись размещена на стене вашей страницы</string>
+    <string name="share_canceled">Действие отменено</string>
 
 </resources>

@@ -2,6 +2,7 @@ package presenters;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,8 +30,11 @@ public class Presenter implements PresentData {
     ImageView imageSky;
     @BindView(R.id.img_wind_direction)
     ImageView imageWindDirect;
+    @BindView(R.id.btn_share)
+    Button btnShare;
 
     private Unbinder unbinder;
+
 
     public Presenter(Activity activity) {
         this.unbinder = ButterKnife.bind(this, activity);
@@ -63,6 +67,8 @@ public class Presenter implements PresentData {
         tvAdditionData[1].setText(String.valueOf(re.getMain().getHumidity()));
         tvAdditionData[2].setText(new SimpleDateFormat("HH:mm:ss").format(re.getSys().getSunrise()));
         tvAdditionData[3].setText(new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(re.getSys().getSunset()));
+
+        btnShare.setEnabled(true);
     }
 
     @Override
