@@ -14,14 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.igorr.weatheroutlook.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import model.ResponseSchema;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import presenters.PresentData;
@@ -64,7 +59,7 @@ public class WeatherFetcher {
                 }).create();
 
         //получить экземпляр Retrofit
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(context.getString(R.string.baseURL))
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(context.getString(R.string.url_base_api))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         //получить экземпляр интерфейса
@@ -73,7 +68,7 @@ public class WeatherFetcher {
         //Запустить фоновый поток для получения данных
         openWeatherAPI.getResponse(city,
                 context.getString(R.string.appID),
-                context.getString(R.string.tempCelsius)
+                context.getString(R.string.temp_in_celsius)
         ).enqueue(new Callback<ResponseSchema>() {
                       @Override
                       public void onResponse(@NonNull Call<ResponseSchema> call, @NonNull Response<ResponseSchema> response) {
@@ -82,7 +77,7 @@ public class WeatherFetcher {
 
                               //получив json, загружаю картинку
                               new OkHttpClient().newCall(
-                                      new Request.Builder().url(context.getString(R.string.HTTP_ICO_LIST)
+                                      new Request.Builder().url(context.getString(R.string.url_base_api).concat(context.getString(R.string.url_http_ico))
                                               + responseSchema.getWeather()[0].getIcon() + context.getString(R.string.dotPNG))
                                               .build())
                                       .enqueue(new okhttp3.Callback() {

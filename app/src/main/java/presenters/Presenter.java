@@ -30,8 +30,6 @@ public class Presenter implements PresentData {
     ImageView imageSky;
     @BindView(R.id.img_wind_direction)
     ImageView imageWindDirect;
-    @BindView(R.id.btn_share)
-    Button btnShare;
 
     private Unbinder unbinder;
 
@@ -68,7 +66,7 @@ public class Presenter implements PresentData {
         tvAdditionData[2].setText(new SimpleDateFormat("HH:mm:ss").format(re.getSys().getSunrise()));
         tvAdditionData[3].setText(new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(re.getSys().getSunset()));
 
-        btnShare.setEnabled(true);
+        //btnShare.setEnabled(true);
     }
 
     @Override

@@ -1,25 +1,22 @@
 package com.igorr.weatheroutlook;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 
-import static model.CitiesRU.*;
-
-public class ActivitySelector extends AppCompatActivity {
+public class FragmentCitiesSelector extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cities_selector);
-        ButterKnife.bind(this);
 
-        ActionBar actionBar = getSupportActionBar();
+/*        ActionBar actionBar = getSupportActionBar();
         RadioGroup radioGroup = findViewById(R.id.r_group);
 
         if (actionBar != null)
@@ -38,6 +35,14 @@ public class ActivitySelector extends AppCompatActivity {
                 //Добавить в ответ ID города
                 setResult(RESULT_OK, new Intent().putExtra(getString(R.string.str_city_name), checkedId));
             }
-        });
+        });*/
     }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_cities_selector, container, false);
+    }
+
+
+
 }

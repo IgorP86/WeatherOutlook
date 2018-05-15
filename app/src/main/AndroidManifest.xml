@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,12 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivitySelector"
-            android:label="@string/label_for_cities_selector"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name="share.ActivityVKShare"
-            android:label="@string/str_authorization"
+            android:label="@string/label_authorization"
             android:parentActivityName=".MainActivity" />
     </application>
 

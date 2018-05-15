@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -33,19 +34,26 @@ public class ActivityVKShare extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autorization);
 
-        String VK_SHARE = getString(R.string.url_vk_share_php);
-        String shareContent = getString(R.string.url_openweathermap);
-
         //Распаковка данных
-        String qParamCity = getIntent().getStringExtra(getResources().getString(R.string.str_city_name));
+        String qParamCity = getIntent().getStringExtra(getString(R.string.str_city_name));
+        //Построение запроса
+        String request = getString(R.string.url_vk_share_php).concat(
+                getString(R.string.url_base_api).concat(
+                        getString(R.string.url_city).concat(
+                                qParamCity
+                        )
+                )
+        );
+
+        Log.d("request", request);
 
         webView = findViewById(R.id.web_view);
         webView.setWebViewClient(new ShareWebViewClient(this));
-        webView.loadUrl(URI.create(VK_SHARE.concat(shareContent).concat(qParamCity)).toString());
+        webView.loadUrl(URI.create(request).toString());
     }
 }
 
-class ShareWebViewClient extends WebViewClient{
+class ShareWebViewClient extends WebViewClient {
     private AppCompatActivity activity;
 
     public ShareWebViewClient(AppCompatActivity activity) {
@@ -56,7 +64,7 @@ class ShareWebViewClient extends WebViewClient{
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         //если запрос прошел успешно:
-        if (request.getUrl().toString().startsWith("https://m.vk.com/share.php?act=success")){
+        if (request.getUrl().toString().startsWith("https://m.vk.com/share.php?act=success")) {
             //Отправить сообщение в MainActivity, закрыть эту активити.
             activity.setResult(RESULT_OK);
             activity.finish();
