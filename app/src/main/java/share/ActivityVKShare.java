@@ -1,6 +1,5 @@
 package share;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +14,13 @@ import com.igorr.weatheroutlook.R;
 
 import java.net.URI;
 
+import network.WeatherFetcher;
+
 import static android.app.Activity.RESULT_OK;
 
 public class ActivityVKShare extends AppCompatActivity {
     private WebView webView;
+    public static final String CITY = "city/";
 
     //Для авторизации в ВК
    /* private String URL = "https://oauth.vk.com/authorize" +
@@ -37,13 +39,7 @@ public class ActivityVKShare extends AppCompatActivity {
         //Распаковка данных
         String qParamCity = getIntent().getStringExtra(getString(R.string.str_city_name));
         //Построение запроса
-        String request = getString(R.string.url_vk_share_php).concat(
-                getString(R.string.url_base_api).concat(
-                        getString(R.string.url_city).concat(
-                                qParamCity
-                        )
-                )
-        );
+        String request = getString(R.string.url_vk_share_php) + WeatherFetcher.BASE_URL + CITY + qParamCity;
 
         Log.d("request", request);
 

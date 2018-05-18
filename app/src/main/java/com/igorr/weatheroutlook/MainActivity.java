@@ -2,29 +2,25 @@ package com.igorr.weatheroutlook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import com.igorr.weatheroutlook.adapters.MyPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
-import network.WeatherFetcher;
+import network.CurrentWeather;
+import network.ForecastWeather;
 import share.ActivityVKShare;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActionListener {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.tab_pager)
@@ -48,28 +44,16 @@ public class MainActivity extends AppCompatActivity {
         //Загрузить ID городов
         CitiesRU.getInstance();
 
-        //Обернуть фрагменты в List
-
         //Подключить ViewPager
-        viewPager.setAdapter(new FragmentStatePagerAdapter() {
-            @Override
-            public Fragment getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public int getCount() {
-                return 0;
-            }
-        });
-        tabLayout.setupWithViewPager(viewPager,true);
-       // updateData(DEFAULT_CITY_ID);
-        Log.d("ORDER","onCreate");
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager, true);
+        // updateData(DEFAULT_CITY_ID);
+        Log.d("ORDER", "onCreate");
     }
 
     @Override
     protected void onResume() {
-        Log.d("ORDER","onResume");
+        Log.d("ORDER", "onResume");
         super.onResume();
     }
 
@@ -79,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.on_main_aktivity_menu, menu);
 
-        Log.d("ORDER","onCreateOptionsMenu");
+        Log.d("ORDER", "onCreateOptionsMenu");
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.d("ORDER","onPrepareOptionsMenu");
+        Log.d("ORDER", "onPrepareOptionsMenu");
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -114,23 +98,22 @@ public class MainActivity extends AppCompatActivity {
                     case RE_WHAT_IS_CITY:
                         //Заменить представлемый город, обновить UI
                         representedCityID = String.valueOf(data.getIntExtra(getString(R.string.str_city_name), 511565));
-                        updateData(representedCityID);
+                        //updateData();
                         break;
                     case RE_SHARE:
-                       // Snackbar.make(parentPanel, R.string.str_share_successfully, Snackbar.LENGTH_LONG).show();
+                        // Snackbar.make(parentPanel, R.string.str_share_successfully, Snackbar.LENGTH_LONG).show();
                         break;
                 }
                 break;
             case RESULT_CANCELED:
-        //        Snackbar.make(parentPanel, R.string.str_share_canceled, Snackbar.LENGTH_LONG).show();
+                //        Snackbar.make(parentPanel, R.string.str_share_canceled, Snackbar.LENGTH_LONG).show();
                 break;
         }
     }
 
-    public void updateData(String cityID) {
-        //Заблокировать кнопку "поделиться"
-    //    MenuItem item = menu.getItem(R.id.menu_group_share);
-//
-        new WeatherFetcher(this, cityID).getData();
+    @Override
+    public void updateData(Fragment uiContainer) {
+        new CurrentWeather(representedCityID, uiContainer).getDataFromNetwork();
+        new ForecastWeather(representedCityID).getDataFromNetwork();
     }
 }

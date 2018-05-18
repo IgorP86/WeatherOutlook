@@ -1,8 +1,8 @@
 package presenters;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.widget.Button;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +15,10 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import model.CitiesRU;
+import model.CurrentWeatherSchema;
 import model.ResponseSchema;
 
-public class Presenter implements PresentData {
+public class Presenter implements PresentData<CurrentWeatherSchema> {
     @BindView(R.id.tv_city_name)
     TextView tvCityName;
     @BindViews({R.id.tv_updated_data, R.id.tv_temperature})
@@ -33,13 +34,16 @@ public class Presenter implements PresentData {
 
     private Unbinder unbinder;
 
-
-    public Presenter(Activity activity) {
-        this.unbinder = ButterKnife.bind(this, activity);
+    public Presenter(Fragment container) {
+        try {
+            this.unbinder = ButterKnife.bind(this, container.getView());
+        }    catch (NullPointerException npe){
+            Log.e(this.getClass().getName(),npe.getMessage()+npe.getCause());
+        }
     }
 
     @Override
-    public void fillData(ResponseSchema re, Drawable... drawables) {
+    public void fillData(CurrentWeatherSchema re, Drawable... drawables) {
         //Название города
         tvCityName.setText(CitiesRU.findCityById(re.getCityId()));
 
@@ -65,8 +69,6 @@ public class Presenter implements PresentData {
         tvAdditionData[1].setText(String.valueOf(re.getMain().getHumidity()));
         tvAdditionData[2].setText(new SimpleDateFormat("HH:mm:ss").format(re.getSys().getSunrise()));
         tvAdditionData[3].setText(new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(re.getSys().getSunset()));
-
-        //btnShare.setEnabled(true);
     }
 
     @Override

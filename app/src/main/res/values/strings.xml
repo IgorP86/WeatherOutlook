@@ -9,14 +9,7 @@
     <string name="str_city_name">cityName</string>
     <string name="str_share_successfully">Запись размещена на стене вашей страницы</string>
     <string name="str_share_canceled">Действие отменено</string>
-    <string name="appID">f45d2f1d63b29740ba59f4999f158e77</string>
-    <string name="url_base_api">http://api.openweathermap.org/</string>
     <string name="url_vk_share_php">https://vk.com/share.php?url=</string>
-    <string name="url_city">city/</string>
-    <string name="url_http_ico">img/w/</string>
-    <string name="temp_in_celsius">metric</string>
-    <string name="temp_in_fahrenheit">imperial</string>
-    <string name="dotPNG">.png</string>
     <string name="for_tests">Для \nтестов</string>
     <string name="str_VKshare">в VK</string>
     <string name="str_OKshare">в Ок</string>

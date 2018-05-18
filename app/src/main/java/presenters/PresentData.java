@@ -4,6 +4,6 @@ import android.graphics.drawable.Drawable;
 
 import model.ResponseSchema;
 
-public interface PresentData {
-    void fillData(ResponseSchema re, Drawable...drawables);
+public interface PresentData<T extends ResponseSchema> {
+    void fillData(T re, Drawable... drawables);
 }
