@@ -7,32 +7,32 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.igorr.weatheroutlook.R;
+import com.igorr.weatheroutlook.FragmentCurrentWeather;
 
 import java.io.IOException;
 
 import model.CurrentWeatherSchema;
-import model.ResponseSchema;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import presenters.CurrentPresenter;
 import presenters.PresentData;
-import presenters.Presenter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CurrentWeather extends WeatherFetcher<CurrentWeatherSchema> {
-    private Fragment uiContainer;
     private BitmapDrawable drawableSky;
     private Handler uiHandler;
-    private PresentData presentData;
+    private PresentData<CurrentWeatherSchema> presentData;
+    private FragmentCurrentWeather uiContainer;
 
     public CurrentWeather(String cityID, Fragment uiContainer) {
         super(cityID);
-        this.uiContainer = uiContainer;
+        this.uiContainer = (FragmentCurrentWeather)uiContainer;
+        presentData = new CurrentPresenter(uiContainer.getView());
         uiHandler = new Handler();
-        presentData = new Presenter(uiContainer);
     }
+
     @Override
     String setRequestType() {
         return TYPE_CURRENT;
@@ -47,7 +47,7 @@ public class CurrentWeather extends WeatherFetcher<CurrentWeatherSchema> {
                     responseSchema = response.body();
 
                     //получив json, загружаю картинку
-                    /**/
+
                     new OkHttpClient().newCall(
                             new Request.Builder().url(BASE_URL + IMAGE + responseSchema.getWeather()[0].getIcon() + PNG)
                                     .build())

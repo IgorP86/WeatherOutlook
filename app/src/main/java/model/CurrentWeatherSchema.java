@@ -16,7 +16,7 @@ public class CurrentWeatherSchema extends ResponseSchema {
     @SerializedName("dt")
     private long lastResponseData;        //Time of data calculation, unix, UTC
     @SerializedName("id")
-    public long cityId;                //City ID
+    private long cityId;                //City ID
     @SerializedName("name")
     private String cityName;            //City cityName
     private byte cod;                   //Internal parameter

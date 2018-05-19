@@ -5,9 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.igorr.weatheroutlook.FragmentCitiesSelector;
 import com.igorr.weatheroutlook.FragmentCurrentWeather;
-import com.igorr.weatheroutlook.FragmentForecastOnFiveDays;
+import com.igorr.weatheroutlook.FragmentForecastOnFewDays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     private void setupPages() {
         fragments.add(new FragmentCurrentWeather());
-        fragments.add(new FragmentForecastOnFiveDays());
+        fragments.add(new FragmentForecastOnFewDays());
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 public class FragmentCurrentWeather extends Fragment {
     private MainActionListener parentActionListener;
+    public static final String UI_ID = "current";
 
     @Override
     public void onAttach(Context context) {
@@ -32,6 +33,7 @@ public class FragmentCurrentWeather extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        parentActionListener.updateData(this);
+        Log.d("PAGER", "FragmentCurrentWeather onResume");
+        parentActionListener.updateData(this,UI_ID);
     }
 }

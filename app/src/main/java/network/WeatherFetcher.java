@@ -79,7 +79,7 @@ public abstract class WeatherFetcher<T extends ResponseSchema> {
                             .enqueue(retrofitCallback);
                     break;
                 case TYPE_FORECAST:
-                    openWeatherAPI.getForecastWeather(cityID, APP_ID, MeasureUnits.CELSIUS.unit, LIMIT[3])
+                    openWeatherAPI.getForecastWeather(cityID, APP_ID, MeasureUnits.CELSIUS.unit, "10")
                             .enqueue(retrofitCallback);
                     break;
             }

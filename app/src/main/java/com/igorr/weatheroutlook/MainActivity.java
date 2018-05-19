@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,7 +31,10 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     //Константы запросов
     private static final int RE_WHAT_IS_CITY = 1;
     private static final int RE_SHARE = 2;
-    private static final String DEFAULT_CITY_ID = "524901";
+    private static final String DEFAULT_CITY_ID = "511565";
+
+    //Константы используемых фрагментов
+    public static final String CURRENT = "current";
 
     //представляемый город: дефолтное - Москва
     private String representedCityID = DEFAULT_CITY_ID;
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
                         .putExtra(getString(R.string.str_city_name), representedCityID), RE_SHARE);
                 return true;
             case R.id.btn_cities_selector:
-                startActivityForResult(new Intent(this, FragmentCitiesSelector.class), RE_WHAT_IS_CITY);
+                //startActivityForResult(new Intent(this, FragmentCitiesSelector.class), RE_WHAT_IS_CITY);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -112,8 +116,14 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     }
 
     @Override
-    public void updateData(Fragment uiContainer) {
-        new CurrentWeather(representedCityID, uiContainer).getDataFromNetwork();
-        new ForecastWeather(representedCityID).getDataFromNetwork();
+    public void updateData(Fragment uiContainer, String UI_ID) {
+        switch (UI_ID){
+            case FragmentCurrentWeather.UI_ID:
+                new CurrentWeather(representedCityID, uiContainer).getDataFromNetwork();
+                break;
+            case FragmentForecastOnFewDays.UI_ID:
+                new ForecastWeather(representedCityID, uiContainer).getDataFromNetwork();
+                break;
+        }
     }
 }
