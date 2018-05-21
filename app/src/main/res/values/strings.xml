@@ -1,26 +1,19 @@
 <resources>
     <string name="app_name">Weather outlook</string>
-    <string name="updated">Обновлено</string>
-    <string name="temperature">Температура</string>
+    <string name="str_updated">Обновлено</string>
+    <string name="str_temperature">Температура</string>
     <string name="str_sunset">Закат</string>
     <string name="str_sunrise">Рассвет</string>
     <string name="str_humidity">Влажность</string>
     <string name="str_pressure">Давление</string>
-    <string name="appID">f45d2f1d63b29740ba59f4999f158e77</string>
-    <string name="baseURL">http://api.openweathermap.org/</string>
-    <string name="tempCelsius">metric</string>
-    <string name="tempFahrenheit">imperial</string>
-    <string name="dotPNG">.png</string>
-    <string name="HTTP_ICO_LIST">http://openweathermap.org/img/w/</string>
-    <string name="city_select">Выбрать город</string>
     <string name="str_city_name">cityName</string>
-    <string name="label_for_cities_selector">Выберете город</string>
-    <string name="for_tests">Для \nтестов</string>
-    <string name="str_share">Поделиться</string>
-    <string name="str_authorization">Авторизация</string>
+    <string name="str_share_successfully">Запись размещена на стене вашей страницы</string>
+    <string name="str_share_canceled">Действие отменено</string>
     <string name="url_vk_share_php">https://vk.com/share.php?url=</string>
-    <string name="url_openweathermap">https://openweathermap.org/city/</string>
-    <string name="share_successfully">Запись размещена на стене вашей страницы</string>
-    <string name="share_canceled">Действие отменено</string>
+    <string name="for_tests">Для \nтестов</string>
+    <string name="str_VKshare">в VK</string>
+    <string name="str_OKshare">в Ок</string>
+    <string name="label_authorization">Авторизация</string>
+    <string name="str_share">Поделиться</string>
 
 </resources>
