@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragments;
-    private String[] PAGE_TITLES = {"Погода сейчас", "Прогноз погоды"};
+    private String[] PAGE_TITLES = {"Погода сейчас", "Погода завтра"};
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);
