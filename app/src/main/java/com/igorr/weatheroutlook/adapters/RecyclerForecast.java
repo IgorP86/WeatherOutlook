@@ -7,16 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.igorr.weatheroutlook.R;
 
 import model.ForecastResponseSchema;
 import presenters.ForecastPresenter;
 import presenters.PresentData;
-
-import static network.WeatherFetcher.BASE_URL;
-import static network.WeatherFetcher.IMAGE;
-import static network.WeatherFetcher.PNG;
 
 public class RecyclerForecast extends RecyclerView.Adapter<ForecastHolder> {
     private ForecastResponseSchema responseSchema;
@@ -35,11 +30,7 @@ public class RecyclerForecast extends RecyclerView.Adapter<ForecastHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ForecastHolder holder, int position) {
-        holder.getPresenter().fillData(responseSchema, position);
-        //Изобржение неба
-        Glide.with(fragment)
-                .load(BASE_URL + IMAGE + responseSchema.getList()[position].getWeather()[0].getIcon() + PNG)
-                .into(((ForecastPresenter)holder.getPresenter()).getImageSky());
+        holder.getPresenter().fillData(responseSchema, position, fragment);
     }
 
     @Override

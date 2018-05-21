@@ -1,5 +1,7 @@
 package share;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +12,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.igorr.weatheroutlook.Preferences;
 import com.igorr.weatheroutlook.R;
 
 import java.net.URI;
@@ -19,17 +22,14 @@ import network.WeatherFetcher;
 import static android.app.Activity.RESULT_OK;
 
 public class ActivityVKShare extends AppCompatActivity {
-    private WebView webView;
-    public static final String CITY = "city/";
+    private static final String DESTINATION = "https://openweathermap.org/city/";
+    private static final String CITY_ID = "cityID";
+    private static final String SHARE_REQUEST = "https://vk.com/share.php?url=";
 
-    //Для авторизации в ВК
-   /* private String URL = "https://oauth.vk.com/authorize" +
-            "?client_id=6469510" +
-            "&display=mobile" +
-            "&redirect_uri=https://oauth.vk.com/blank.html" +
-            "&scope=friends" +
-            "&response_type=token" +
-            "&v=5.73";*/
+    public static Intent getInstance(Context packageContext){
+        return new Intent(packageContext, ActivityVKShare.class)
+                .putExtra(CITY_ID, Preferences.getPreferableCity(packageContext));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,13 +37,13 @@ public class ActivityVKShare extends AppCompatActivity {
         setContentView(R.layout.activity_autorization);
 
         //Распаковка данных
-        String qParamCity = getIntent().getStringExtra(getString(R.string.str_city_name));
+        String qParamCity = getIntent().getStringExtra(CITY_ID);
         //Построение запроса
-        String request = getString(R.string.url_vk_share_php) + WeatherFetcher.BASE_URL + CITY + qParamCity;
+        String request = SHARE_REQUEST + DESTINATION + qParamCity;
 
         Log.d("request", request);
 
-        webView = findViewById(R.id.web_view);
+        WebView webView = findViewById(R.id.web_view);
         webView.setWebViewClient(new ShareWebViewClient(this));
         webView.loadUrl(URI.create(request).toString());
     }
@@ -73,6 +73,17 @@ class ShareWebViewClient extends WebViewClient {
 
 
 //Для получения токена (может пригодится)
+
+
+//Для авторизации в ВК
+   /* private String URL = "https://oauth.vk.com/authorize" +
+            "?client_id=6469510" +
+            "&display=mobile" +
+            "&redirect_uri=https://oauth.vk.com/blank.html" +
+            "&scope=friends" +
+            "&response_type=token" +
+            "&v=5.73";*/
+
 /*class VKwebClient extends WebViewClient {
     private String accessToken;
 

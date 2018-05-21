@@ -174,12 +174,12 @@ public abstract class ResponseSchema {
         }
     }
 
-    public class Rain {
+    public static class Rain {
         @SerializedName("3h")
         private float rain;
     }
 
-    public class Snow {
+    public static class Snow {
         @SerializedName("3h")
         private int snow;
     }

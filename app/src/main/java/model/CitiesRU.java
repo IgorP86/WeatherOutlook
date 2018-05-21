@@ -22,13 +22,13 @@ public class CitiesRU {
         if (citiesRu != null)
             citiesRu.clear();
 
-        citiesRu.add(new City("511565", "Пенза", "Penza", "RU"));
-        citiesRu.add(new City("520555", "Нижний Новгород", "Nizhniy Novgorod", "RU"));
-        citiesRu.add(new City("2013364", "Владимр", "Vladimir", "RU"));
-        citiesRu.add(new City("498817", "Санкт_Петербург", "Saint Petersburg", "RU"));
-        citiesRu.add(new City("551487", "Казань", "Kazan", "RU"));
-        citiesRu.add(new City("2013348", "Владивосток", "Vladivostok", "RU"));
-        citiesRu.add(new City("524901", "Москва", "Moscow", "RU"));
+        citiesRu.add(new City("511565", "Пенза", "RU"));
+        citiesRu.add(new City("520555", "Нижний Новгород", "RU"));
+        citiesRu.add(new City("2013364", "Владимр",  "RU"));
+        citiesRu.add(new City("498817", "Санкт Петербург", "RU"));
+        citiesRu.add(new City("551487", "Казань", "RU"));
+        citiesRu.add(new City("2013348", "Владивосток", "RU"));
+        citiesRu.add(new City("524901", "Москва", "RU"));
     }
 
     public static List<City> getCitiesRu() {
@@ -45,15 +45,6 @@ public class CitiesRU {
         return null;
     }
 
-    @Nullable
-    public static String getAlterName(String cityName) {
-        for (City c : citiesRu) {
-            if (c.getCityName().equals(cityName)) {
-                return c.alternateName;
-            }
-        }
-        return null;
-    }
 
     public static class City {
         private String cityId;
@@ -61,13 +52,11 @@ public class CitiesRU {
         /**
          * имя города на английском
          */
-        private String alternateName;
         private String country;
 
-        public City(String cityId, String cityName, String alternateName, String country) {
+        public City(String cityId, String cityName, String country) {
             this.cityId = cityId;
             this.cityName = cityName;
-            this.alternateName = alternateName;
             this.country = country;
         }
 

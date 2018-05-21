@@ -20,11 +20,6 @@
                 android:title="@string/str_VKshare"
                 app:showAsAction="ifRoom" />
 
-            <item
-                android:id="@+id/btn_OKshare"
-                android:icon="@drawable/ic_share_black_24dp"
-                android:title="@string/str_OKshare"
-                app:showAsAction="ifRoom" />
         </menu>
     </item>
 </menu>

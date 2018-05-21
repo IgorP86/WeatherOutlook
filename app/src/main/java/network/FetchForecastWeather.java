@@ -2,6 +2,7 @@ package network;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.igorr.weatheroutlook.FragmentForecastOnFewDays;
 
@@ -10,12 +11,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForecastWeather extends WeatherFetcher<ForecastResponseSchema> {
-
+public class FetchForecastWeather extends WeatherFetcher<ForecastResponseSchema> {
     private FragmentForecastOnFewDays uiFragment;
 
-    public ForecastWeather(String cityID, Fragment uiFragment) {
-        super(cityID);
+    public FetchForecastWeather(Fragment uiFragment) {
+        super(uiFragment.getContext());
         this.uiFragment = (FragmentForecastOnFewDays) uiFragment;
     }
 
@@ -35,7 +35,7 @@ public class ForecastWeather extends WeatherFetcher<ForecastResponseSchema> {
 
             @Override
             public void onFailure(@NonNull Call<ForecastResponseSchema> call, @NonNull Throwable t) {
-
+                Log.i("GET FORECAST", "ERROR: " + t.getMessage());
             }
         };
     }

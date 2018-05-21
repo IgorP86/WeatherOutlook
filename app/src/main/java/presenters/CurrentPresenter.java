@@ -1,24 +1,21 @@
 package presenters;
 
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.igorr.weatheroutlook.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.BindViews;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import model.CitiesRU;
 import model.CurrentWeatherSchema;
-import model.ForecastResponseSchema;
 import model.ResponseSchema;
+
+import static network.WeatherFetcher.BASE_API_URL;
+import static network.WeatherFetcher.IMAGE;
+import static network.WeatherFetcher.PNG;
 
 public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
     public CurrentPresenter(View viewContainer) {
@@ -26,15 +23,17 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
     }
 
     @Override
-    public void fillData(CurrentWeatherSchema re, Object... drawables) {
+    public void fillData(CurrentWeatherSchema re, Object... addition) {
+        Fragment fragment = (Fragment) addition[0];
         //Название города
         tvCityName.setText(CitiesRU.findCityById(re.getCityId()));
 
         //время последнего обновления
-        tvTemperatureGroup[0].setText(String.valueOf(re.getLastResponseData()));
-
+        tvTemperatureGroup[0].setText(new java.text.SimpleDateFormat("HH:mm").format(re.getLastResponseData()*1000));
         //Изобржение неба
-        imageSky.setImageDrawable((Drawable) drawables[0]);
+        Glide.with(fragment)
+                .load(BASE_API_URL + IMAGE + re.getWeather()[0].getIcon() + PNG)
+                .into(getImageSky());
 
         //Направление ветра
         imageWindDirect.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
@@ -50,7 +49,9 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
 
         tvAdditionData[0].setText(String.valueOf(re.getMain().getPressure() * ResponseSchema.K_PRESSURE));
         tvAdditionData[1].setText(String.valueOf(re.getMain().getHumidity()));
-        tvAdditionData[2].setText(new SimpleDateFormat("HH:mm:ss").format(re.getSys().getSunrise()));
-        tvAdditionData[3].setText(new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(re.getSys().getSunset()));
+
+       // String date = new java.text.SimpleDateFormat("KK:MM:SS").format(re.getSys().getSunrise());
+        tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunrise()*1000));
+        tvAdditionData[3].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunset()*1000));
     }
 }

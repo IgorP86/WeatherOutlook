@@ -1,18 +1,20 @@
 package network;
 
+import android.content.Context;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.igorr.weatheroutlook.Preferences;
 
 import model.ResponseSchema;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public abstract class WeatherFetcher<T extends ResponseSchema> {
+public abstract class WeatherFetcher<T extends ResponseSchema>{
     protected String cityID;
-    protected T responseSchema;
 
     //query params
     protected static final String APP_ID = "f45d2f1d63b29740ba59f4999f158e77";
@@ -29,7 +31,7 @@ public abstract class WeatherFetcher<T extends ResponseSchema> {
     }
 
     //url's
-    public static final String BASE_URL = "http://api.openweathermap.org/";
+    public static final String BASE_API_URL = "http://api.openweathermap.org/";
     public static final String IMAGE = "img/w/";
     public static final String TYPE_CURRENT = "weather";
     public static final String TYPE_FORECAST = "forecast";
@@ -41,10 +43,10 @@ public abstract class WeatherFetcher<T extends ResponseSchema> {
      */
     abstract String setRequestType();
 
-    public WeatherFetcher(String cityID) {
-        this.cityID = cityID;
+    public WeatherFetcher(Context context) {
+        //Город брать из настроек SharedPref
+        this.cityID = Preferences.getPreferableCity(context);
     }
-
 
     public void getDataFromNetwork() {
         //создать Gson, настроить стратегию десереализации
@@ -63,7 +65,7 @@ public abstract class WeatherFetcher<T extends ResponseSchema> {
                 }).create();
 
         //получить экземпляр Retrofit
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_API_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         //получить экземпляр интерфейса
