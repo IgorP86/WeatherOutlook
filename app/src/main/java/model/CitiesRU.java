@@ -12,8 +12,7 @@ public class CitiesRU {
 
     public static CitiesRU getInstance() {
         if (citiesRUSingle == null) {
-            citiesRUSingle = new CitiesRU();
-            return citiesRUSingle;
+            return citiesRUSingle = new CitiesRU();
         } else
             return citiesRUSingle;
     }

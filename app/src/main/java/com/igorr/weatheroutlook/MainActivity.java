@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
+import network.SentinelConnection;
 import share.ActivityVKShare;
 
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     @BindView(R.id.tab_pager)
     TabLayout tabLayout;
 
+    private static SentinelConnection sentinel;
     //request code
     private static final int RE_SHARE = 2;
 
@@ -36,18 +38,30 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        sentinel = new SentinelConnection(this);
+        sentinel.start();
         //Загрузить данные по городам
         CitiesRU.getInstance();
         //Подключить ViewPager
-        updateUI();
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager, true);
+    }
 
-        Log.d("ORDER", "onCreate");
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("sentinel", "выход из потока?");
+        sentinel.interrupt();
     }
 
     @Override
     public void updateUI() {
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager, true);
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        for (Fragment f : fragmentList) {
+            if (f instanceof Updatable) {
+                ((Updatable) f).updateContent();
+            }
+        }
     }
 
     @Override

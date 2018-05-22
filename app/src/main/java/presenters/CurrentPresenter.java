@@ -50,7 +50,6 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
         tvAdditionData[0].setText(String.valueOf(re.getMain().getPressure() * ResponseSchema.K_PRESSURE));
         tvAdditionData[1].setText(String.valueOf(re.getMain().getHumidity()));
 
-       // String date = new java.text.SimpleDateFormat("KK:MM:SS").format(re.getSys().getSunrise());
         tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunrise()*1000));
         tvAdditionData[3].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunset()*1000));
     }

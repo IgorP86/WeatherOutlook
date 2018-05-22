@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import com.igorr.weatheroutlook.adapters.RecyclerForecast;
 
 import model.ForecastResponseSchema;
-import network.FetchForecastWeather;
+import network.FetchingForecastWeather;
 
-public class FragmentForecastOnFewDays extends Fragment {
+public class FragmentForecastOnFewDays extends Fragment implements Updatable {
     private View view;
 
     @Nullable
@@ -27,12 +27,17 @@ public class FragmentForecastOnFewDays extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new FetchForecastWeather(this).getDataFromNetwork();
+        updateContent();
     }
 
     public void setupAdapter(ForecastResponseSchema re) {
         RecyclerView recyclerView = view.findViewById(R.id.rv_forecast);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(new RecyclerForecast(re, this));
+    }
+
+    @Override
+    public void updateContent() {
+        new FetchingForecastWeather(this).getDataFromNetwork();
     }
 }

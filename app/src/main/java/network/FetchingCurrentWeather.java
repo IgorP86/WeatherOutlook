@@ -13,11 +13,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FetchCurrentWeather extends WeatherFetcher<CurrentWeatherSchema> {
+public class FetchingCurrentWeather extends WeatherFetcher<CurrentWeatherSchema> {
     private PresentData<CurrentWeatherSchema> presentData;
     private FragmentCurrentWeather uiContainer;
 
-    public FetchCurrentWeather(Fragment uiContainer) {
+    public FetchingCurrentWeather(Fragment uiContainer) {
         super(uiContainer.getContext());
         this.uiContainer = (FragmentCurrentWeather) uiContainer;
         presentData = new CurrentPresenter(uiContainer.getView());
