@@ -53,7 +53,7 @@ public class ForecastPresenter extends Presenter<ForecastResponseSchema> {
 
         tvAdditionData[0].setText(String.valueOf(re.getList()[actualPos].getMain().getPressure() * ResponseSchema.K_PRESSURE));
         tvAdditionData[1].setText(String.valueOf(re.getList()[actualPos].getMain().getHumidity()));
-        tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getList()[0].getSys().getSunrise()*1000));
-        tvAdditionData[3].setText(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(re.getList()[actualPos].getSys().getSunset()*1000));
+        tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getList()[actualPos].getSys().getSunrise()*1000));
+        tvAdditionData[3].setText(new SimpleDateFormat("HH:mm").format(re.getList()[actualPos].getSys().getSunset()*1000));
     }
 }

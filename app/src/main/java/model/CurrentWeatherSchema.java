@@ -1,8 +1,20 @@
 package model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = CurrentWeatherSchema.DB_CURRENT_WEATHER)
 public class CurrentWeatherSchema extends ResponseSchema {
+    @Ignore
+    public static final String DB_CURRENT_WEATHER = "dbCurrentWeather";
+
+    @PrimaryKey
+    @SerializedName("id")
+    private long cityId;                //City ID
+    @Ignore
     @SerializedName("coord")
     private Coordinates coordinates;
     private Weather[] weather;
@@ -15,10 +27,10 @@ public class CurrentWeatherSchema extends ResponseSchema {
     private Snow snow;                   //volume for the last 3 hours
     @SerializedName("dt")
     private long lastResponseData;        //Time of data calculation, unix, UTC
-    @SerializedName("id")
-    private long cityId;                //City ID
+    @Ignore
     @SerializedName("name")
     private String cityName;            //City cityName
+    @Ignore
     private byte cod;                   //Internal parameter
 
     public Weather[] getWeather() {
@@ -72,4 +84,5 @@ public class CurrentWeatherSchema extends ResponseSchema {
     public Coordinates getCoordinates() {
         return coordinates;
     }
+
 }

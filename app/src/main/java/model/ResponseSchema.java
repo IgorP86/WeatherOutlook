@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.annotations.SerializedName;
 
+
 public abstract class ResponseSchema {
     public static final float K_PRESSURE = 0.750063755419211f;  //Коэф. для перевода давления в мм.рт.ст
 

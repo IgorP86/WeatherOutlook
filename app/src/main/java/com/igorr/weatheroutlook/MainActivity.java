@@ -1,6 +1,11 @@
 package com.igorr.weatheroutlook;
 
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -15,22 +20,22 @@ import com.igorr.weatheroutlook.adapters.MyPagerAdapter;
 
 import java.util.List;
 
+import DBWeather.WeatherDB;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
-import network.SentinelConnection;
+import model.CurrentWeatherSchema;
 import share.ActivityVKShare;
 
-
-public class MainActivity extends AppCompatActivity implements MainActionListener {
+public class MainActivity extends AppCompatActivity implements MainActionListener, LifecycleObserver {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.tab_pager)
     TabLayout tabLayout;
 
-    private static SentinelConnection sentinel;
     //request code
     private static final int RE_SHARE = 2;
+    private ConnectivityManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,26 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        sentinel = new SentinelConnection(this);
-        sentinel.start();
+        //Test
+        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (cm != null) {
+                cm.addDefaultNetworkActiveListener(new ConnectivityManager.OnNetworkActiveListener() {
+                    @Override
+                    public void onNetworkActive() {
+                        updateUI();
+                        Snackbar.make(viewPager, "Статус сети поменялся", Snackbar.LENGTH_LONG).show();
+                        Log.d("CM", cm.getActiveNetworkInfo().getTypeName());
+                    }
+                });
+            }
+        }
+
+        //Room
+        WeatherDB db =  Room.databaseBuilder(getApplicationContext(),
+                WeatherDB.class, CurrentWeatherSchema.DB_CURRENT_WEATHER).build();
+
+      /*  db.weatherDao().insert();*/
         //Загрузить данные по городам
         CitiesRU.getInstance();
         //Подключить ViewPager
@@ -48,17 +71,10 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("sentinel", "выход из потока?");
-        sentinel.interrupt();
-    }
-
-    @Override
     public void updateUI() {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         for (Fragment f : fragmentList) {
-            if (f instanceof Updatable) {
+            if (f != null && f instanceof Updatable) {
                 ((Updatable) f).updateContent();
             }
         }

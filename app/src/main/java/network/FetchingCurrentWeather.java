@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.igorr.weatheroutlook.FragmentCurrentWeather;
 
+import DBWeather.WeatherDB;
 import model.CurrentWeatherSchema;
 import presenters.CurrentPresenter;
 import presenters.PresentData;
@@ -15,12 +16,15 @@ import retrofit2.Response;
 
 public class FetchingCurrentWeather extends WeatherFetcher<CurrentWeatherSchema> {
     private PresentData<CurrentWeatherSchema> presentData;
+    private WeatherDB weatherDB;
     private FragmentCurrentWeather uiContainer;
 
-    public FetchingCurrentWeather(Fragment uiContainer) {
+
+    public FetchingCurrentWeather(Fragment uiContainer, WeatherDB db) {
         super(uiContainer.getContext());
         this.uiContainer = (FragmentCurrentWeather) uiContainer;
         presentData = new CurrentPresenter(uiContainer.getView());
+        weatherDB = db;
     }
 
     @Override
@@ -34,7 +38,10 @@ public class FetchingCurrentWeather extends WeatherFetcher<CurrentWeatherSchema>
             @Override
             public void onResponse(@NonNull Call<CurrentWeatherSchema> call, @NonNull Response<CurrentWeatherSchema> response) {
                 if (response.isSuccessful()) {
+                    //отобразить полученные данные
                     presentData.fillData(response.body(), uiContainer);
+                    //занести их в БД
+                    weatherDB.weatherDao().insert(response.body());
                 }
             }
 
