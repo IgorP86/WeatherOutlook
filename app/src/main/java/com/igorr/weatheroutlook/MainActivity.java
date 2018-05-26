@@ -43,19 +43,18 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //Test
+        //Листнер, если вдруг появится сеть (появляется даже тогда, когда вроде бы и не пропадала)
         cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (cm != null) {
-                cm.addDefaultNetworkActiveListener(new ConnectivityManager.OnNetworkActiveListener() {
-                    @Override
-                    public void onNetworkActive() {
-                        updateUI();
-                        Log.d("CM", String.valueOf(cm.getActiveNetworkInfo().isConnected()));
-                    }
-                });
-            }
+            cm.addDefaultNetworkActiveListener(new ConnectivityManager.OnNetworkActiveListener() {
+                @Override
+                public void onNetworkActive() {
+                    updateUI();
+                    Log.d("CM", String.valueOf(cm.getActiveNetworkInfo().isConnected()));
+                }
+            });
         }
+
         //Загрузить данные по городам
         CitiesRU.getInstance();
         //Подключить ViewPager

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 public class Preferences {
     private static final String CITY_ID = "city_id";
     private static final long DEFAULT_CITY_ID = 511565L;
+
     public static void setPreferableCity(Context context, long value){
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit().putLong(CITY_ID, value)

@@ -24,6 +24,8 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
     @Override
     public void fillData(CurrentWeatherSchema re, Object... addition) {
         Fragment fragment = (Fragment) addition[0];
+        //Флаг
+        imageFlag.setImageDrawable(findFlag(re.getSys().getCountry()));
         //Название города
         tvCityName.setText(CitiesRU.findCityById(re.getCityId()));
 
@@ -32,7 +34,7 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
         //Изобржение неба
         Glide.with(fragment)
                 .load(BASE_API_URL + IMAGE + re.getWeather()[0].getIcon() + PNG)
-                .into(getImageSky());
+                .into(imageSky);
 
         //Направление ветра
         imageWindDirect.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
@@ -48,7 +50,6 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
 
         tvAdditionData[0].setText(String.valueOf(re.getMain().getPressure() * ResponseSchema.K_PRESSURE));
         tvAdditionData[1].setText(String.valueOf(re.getMain().getHumidity()));
-
         tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunrise()*1000));
         tvAdditionData[3].setText(new SimpleDateFormat("HH:mm").format(re.getSys().getSunset()*1000));
     }

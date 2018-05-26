@@ -27,17 +27,18 @@ public class ForecastPresenter extends Presenter<ForecastResponseSchema> {
         //Текущая позиция адаптера
         int actualPos = (Integer) additionData[0];
         Fragment fragment = (Fragment) additionData[1];
-
+        //Флаг
+        imageFlag.setImageDrawable(findFlag(re.getCity().getCountry()));
         //Название города
         tvCityName.setText(CitiesRU.findCityById(re.getCity().getCityId()));
 
         //время последнего обновления
-        tvTemperatureGroup[0].setText(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(re.getList()[actualPos].getLastResponseData()*1000));
+        tvTemperatureGroup[0].setText(new SimpleDateFormat("dd-MM HH:mm").format(re.getList()[actualPos].getLastResponseData()*1000));
 
         //Изобржение неба
         Glide.with(fragment)
                 .load(BASE_API_URL + IMAGE + re.getList()[actualPos].getWeather()[0].getIcon() + PNG)
-                .into(getImageSky());
+                .into(imageSky);
 
         //Направление ветра
         imageWindDirect.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
@@ -53,7 +54,10 @@ public class ForecastPresenter extends Presenter<ForecastResponseSchema> {
 
         tvAdditionData[0].setText(String.valueOf(re.getList()[actualPos].getMain().getPressure() * ResponseSchema.K_PRESSURE));
         tvAdditionData[1].setText(String.valueOf(re.getList()[actualPos].getMain().getHumidity()));
-        tvAdditionData[2].setText(new SimpleDateFormat("HH:mm").format(re.getList()[actualPos].getSys().getSunrise()*1000));
-        tvAdditionData[3].setText(new SimpleDateFormat("HH:mm").format(re.getList()[actualPos].getSys().getSunset()*1000));
+        //Скрыть неиспользуемые поля
+        tvAdditionData[2].setVisibility(View.GONE);
+        tvAdditionData[3].setVisibility(View.GONE);
+        labels[0].setVisibility(View.GONE);
+        labels[1].setVisibility(View.GONE);
     }
 }

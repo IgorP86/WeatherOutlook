@@ -35,10 +35,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/image_country_flag"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/ic_launcher_background" />
+                tools:background="@drawable/ic_launcher_background"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_city_name"
@@ -47,7 +49,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
                 android:gravity="center_horizontal"
-                android:textSize="18sp"
+                android:textSize="26sp"
                 tools:text="Пенза" />
         </LinearLayout>
 
@@ -61,27 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location_name">
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="15dp"
-                    android:text="@string/str_updated"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tv_updated_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textSize="18sp"
-                    tools:text="Дата" />
-            </TableRow>
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -94,15 +75,37 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="15dp"
                     android:text="@string/str_temperature"
-                    android:textSize="12sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_temperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:textSize="18sp"
+                    android:textSize="30sp"
                     tools:text="+150  С" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="15dp"
+                    android:text="@string/str_updated"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_updated_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="18sp"
+                    tools:text="Дата" />
             </TableRow>
 
         </TableLayout>
@@ -129,7 +132,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center|start"
                 android:padding="3dp"
-                android:textSize="22sp"
+                android:textSize="26sp"
                 tools:text="Ясно-неясно" />
         </LinearLayout>
 
@@ -216,6 +219,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/label_sunrise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -238,6 +242,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/label_sunset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
