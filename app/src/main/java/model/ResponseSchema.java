@@ -29,16 +29,16 @@ public abstract class ResponseSchema {
     public static class Weather {
         private int id;                         //id Weather condition
         @SerializedName("main")
-        private String mainGroupWeatherParams;  //rain, Snow, Extreme etc.
+        private String mainWeatherCondition;  //rain, Snow, Extreme etc.
         @SerializedName("description")
-        private String weatherCondition;        //description Weather condition within the group
+        private String addWeatherCondition;        //description Weather condition within the group
         private String icon;                    //Weather icon id
 
 
-        public Weather(int id, String mainGroupWeatherParams, String weatherCondition, String icon) {
+        public Weather(int id, String mainWeatherCondition, String addWeatherCondition, String icon) {
             this.id = id;
-            this.mainGroupWeatherParams = mainGroupWeatherParams;
-            this.weatherCondition = weatherCondition;
+            this.mainWeatherCondition = mainWeatherCondition;
+            this.addWeatherCondition = addWeatherCondition;
             this.icon = icon;
         }
 
@@ -46,12 +46,12 @@ public abstract class ResponseSchema {
             return id;
         }
 
-        public String getMainGroupWeatherParams() {
-            return mainGroupWeatherParams;
+        public String getMainWeatherCondition() {
+            return mainWeatherCondition;
         }
 
-        public String getWeatherCondition() {
-            return weatherCondition;
+        public String getAddWeatherCondition() {
+            return addWeatherCondition;
         }
 
         public String getIcon() {
@@ -131,7 +131,7 @@ public abstract class ResponseSchema {
         @SerializedName("deg")
         private float degrees;    //Wind direction, degrees (meteorological)
 
-        public Wind(float speed, String type) {
+        public Wind(float speed, float degrees) {
             this.speed = speed;
             this.degrees = degrees;
         }
@@ -147,7 +147,7 @@ public abstract class ResponseSchema {
 
     public static class Sys {
         private String message; //Internal parameter
-        private String country;   // Country code (GB, JP etc.)
+        private String country;  // Country code (GB, JP etc.)
         private long sunrise;   //sunrise time, unix, UTC
         private long sunset;    //Sunset time, unix, UTC
 

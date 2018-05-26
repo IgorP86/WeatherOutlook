@@ -2,17 +2,17 @@ package DBWeather.type.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import java.lang.reflect.Field;
-
 import model.ResponseSchema;
 
 public class WeatherConverter {
-    Field field;
+    @TypeConverter
+    public String fromWeatherArr(ResponseSchema.Weather[] weather) {
+        return String.format("%s;%s", weather[0].getMainWeatherCondition(), weather[0].getIcon());
+    }
 
     @TypeConverter
-    public String fromWeatherArr(ResponseSchema.Weather[] weather){
-        return weather[0].
-
-        //return hobbies.stream().collect(Collectors.joining(","));
+    public ResponseSchema.Weather[] toWeatherArr(String data) {
+        String[] params = data.split(";");
+        return new ResponseSchema.Weather[]{new ResponseSchema.Weather(0, params[0], null, params[1])};
     }
 }

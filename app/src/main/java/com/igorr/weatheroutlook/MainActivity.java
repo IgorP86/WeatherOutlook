@@ -44,25 +44,18 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         ButterKnife.bind(this);
 
         //Test
-        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (cm != null) {
                 cm.addDefaultNetworkActiveListener(new ConnectivityManager.OnNetworkActiveListener() {
                     @Override
                     public void onNetworkActive() {
                         updateUI();
-                        Snackbar.make(viewPager, "Статус сети поменялся", Snackbar.LENGTH_LONG).show();
-                        Log.d("CM", cm.getActiveNetworkInfo().getTypeName());
+                        Log.d("CM", String.valueOf(cm.getActiveNetworkInfo().isConnected()));
                     }
                 });
             }
         }
-
-        //Room
-        WeatherDB db =  Room.databaseBuilder(getApplicationContext(),
-                WeatherDB.class, CurrentWeatherSchema.DB_CURRENT_WEATHER).build();
-
-      /*  db.weatherDao().insert();*/
         //Загрузить данные по городам
         CitiesRU.getInstance();
         //Подключить ViewPager
@@ -74,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     public void updateUI() {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         for (Fragment f : fragmentList) {
-            if (f != null && f instanceof Updatable) {
+            if (f != null && f instanceof Updatable && f.isVisible()) {
                 ((Updatable) f).updateContent();
             }
         }

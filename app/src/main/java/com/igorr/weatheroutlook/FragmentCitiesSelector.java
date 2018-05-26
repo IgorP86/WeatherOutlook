@@ -56,7 +56,7 @@ public class FragmentCitiesSelector extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Сохранить в настройках выбор города
-                        int selectedID = radioGroup.getCheckedRadioButtonId();
+                        long selectedID = radioGroup.getCheckedRadioButtonId();
                         Preferences.setPreferableCity(getContext(), selectedID);
                         parentListener.updateUI();
                     }

@@ -48,7 +48,7 @@ public class ForecastPresenter extends Presenter<ForecastResponseSchema> {
         tvTemperatureGroup[1].setText(temp <= 0 ?
                 String.format("%s \u00B0C", temp) : String.format("+%s \u00B0C", temp));
 
-        tvWeatherConditions[0].setText(re.getList()[actualPos].getWeather()[0].getMainGroupWeatherParams());
+        tvWeatherConditions[0].setText(re.getList()[actualPos].getWeather()[0].getMainWeatherCondition());
         tvWeatherConditions[1].setText(String.format("%s м/с", String.valueOf(re.getList()[actualPos].getWind().getSpeed())));
 
         tvAdditionData[0].setText(String.valueOf(re.getList()[actualPos].getMain().getPressure() * ResponseSchema.K_PRESSURE));

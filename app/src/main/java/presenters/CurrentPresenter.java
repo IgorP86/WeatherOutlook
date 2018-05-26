@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide;
 import com.igorr.weatheroutlook.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import model.CitiesRU;
 import model.CurrentWeatherSchema;
@@ -44,7 +43,7 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
         tvTemperatureGroup[1].setText(temp <= 0 ?
                 String.format("%s \u00B0C", temp) : String.format("+%s \u00B0C", temp));
 
-        tvWeatherConditions[0].setText(re.getWeather()[0].getMainGroupWeatherParams());
+        tvWeatherConditions[0].setText(re.getWeather()[0].getMainWeatherCondition());
         tvWeatherConditions[1].setText(String.format("%s м/с", String.valueOf(re.getWind().getSpeed())));
 
         tvAdditionData[0].setText(String.valueOf(re.getMain().getPressure() * ResponseSchema.K_PRESSURE));

@@ -1,5 +1,8 @@
 package network;
 
+import android.app.Application;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,11 +23,14 @@ public class FetchingCurrentWeather extends WeatherFetcher<CurrentWeatherSchema>
     private FragmentCurrentWeather uiContainer;
 
 
-    public FetchingCurrentWeather(Fragment uiContainer, WeatherDB db) {
+    public FetchingCurrentWeather(Fragment uiContainer, Context appContext) {
         super(uiContainer.getContext());
         this.uiContainer = (FragmentCurrentWeather) uiContainer;
         presentData = new CurrentPresenter(uiContainer.getView());
-        weatherDB = db;
+        weatherDB = Room.databaseBuilder(appContext.getApplicationContext(),
+                WeatherDB.class, CurrentWeatherSchema.DB_CURRENT_WEATHER)
+                .allowMainThreadQueries()
+                .build();
     }
 
     @Override
