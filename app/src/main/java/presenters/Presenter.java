@@ -1,5 +1,6 @@
 package presenters;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import butterknife.Unbinder;
 import model.ResponseSchema;
 
 public abstract class Presenter<T extends ResponseSchema> implements PresentData<T> {
+    @BindView(R.id.image_country_flag)
+    ImageView imageFlag;
     @BindView(R.id.tv_city_name)
     TextView tvCityName;
     @BindViews({R.id.tv_updated_data, R.id.tv_temperature})
@@ -26,18 +29,29 @@ public abstract class Presenter<T extends ResponseSchema> implements PresentData
     ImageView imageSky;
     @BindView(R.id.img_wind_direction)
     ImageView imageWindDirect;
+    @BindViews({R.id.label_sunrise, R.id.label_sunset})
+    TextView[] labels;
 
     private Unbinder unbinder;
-
-    public ImageView getImageSky() {
-        return imageSky;
-    }
+    private View view;
 
     public Presenter(View viewContainer) {
+        this.view = viewContainer;
         try {
             this.unbinder = ButterKnife.bind(this, viewContainer);
-        }    catch (NullPointerException npe){
-            Log.e(this.getClass().getName(),npe.getMessage()+npe.getCause());
+        } catch (NullPointerException npe) {
+            Log.e(this.getClass().getName(), npe.getMessage() + npe.getCause());
+        }
+    }
+
+    protected Drawable findFlag(String country) {
+        switch (country) {
+            case "RU":
+                return view.getResources().getDrawable(R.mipmap.ic_flag_ru);
+            case "GB":
+                return view.getResources().getDrawable(R.drawable.ic_launcher_background);
+            default:
+                return view.getResources().getDrawable(R.drawable.ic_launcher_background);
         }
     }
 

@@ -17,8 +17,6 @@ import com.igorr.weatheroutlook.R;
 
 import java.net.URI;
 
-import network.WeatherFetcher;
-
 import static android.app.Activity.RESULT_OK;
 
 public class ActivityVKShare extends AppCompatActivity {
@@ -28,7 +26,7 @@ public class ActivityVKShare extends AppCompatActivity {
 
     public static Intent getInstance(Context packageContext){
         return new Intent(packageContext, ActivityVKShare.class)
-                .putExtra(CITY_ID, Preferences.getPreferableCity(packageContext));
+                .putExtra(CITY_ID, Preferences.getPreferableCityStr(packageContext));
     }
 
     @Override

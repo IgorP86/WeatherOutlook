@@ -28,6 +28,7 @@ public class CitiesRU {
         citiesRu.add(new City("551487", "Казань", "RU"));
         citiesRu.add(new City("2013348", "Владивосток", "RU"));
         citiesRu.add(new City("524901", "Москва", "RU"));
+        citiesRu.add(new City("2643743", "Лондон", "GB"));
     }
 
     public static List<City> getCitiesRu() {
@@ -48,9 +49,6 @@ public class CitiesRU {
     public static class City {
         private String cityId;
         private String cityName;
-        /**
-         * имя города на английском
-         */
         private String country;
 
         public City(String cityId, String cityName, String country) {

@@ -6,17 +6,21 @@ import android.support.annotation.NonNull;
 
 public class Preferences {
     private static final String CITY_ID = "city_id";
-    private static final int DEFAULT_CITY_ID = 511565;
+    private static final long DEFAULT_CITY_ID = 511565L;
 
-    public static void setPreferableCity(Context context, Integer id){
+    public static void setPreferableCity(Context context, long value){
         PreferenceManager.getDefaultSharedPreferences(context)
-                .edit().putInt(CITY_ID, id)
+                .edit().putLong(CITY_ID, value)
                 .apply();
     }
 
     @NonNull
-    public static String getPreferableCity(Context context){
+    public static String getPreferableCityStr(Context context){
         return String.valueOf(PreferenceManager.getDefaultSharedPreferences(context)
-                .getInt(CITY_ID,DEFAULT_CITY_ID));
+                .getLong(CITY_ID,DEFAULT_CITY_ID));
+    }
+
+    public static long getPreferableCityLong(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(CITY_ID,DEFAULT_CITY_ID);
     }
 }

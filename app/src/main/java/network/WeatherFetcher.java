@@ -45,7 +45,7 @@ public abstract class WeatherFetcher<T extends ResponseSchema>{
 
     public WeatherFetcher(Context context) {
         //Город брать из настроек SharedPref
-        this.cityID = Preferences.getPreferableCity(context);
+        this.cityID = Preferences.getPreferableCityStr(context);
     }
 
     public void getDataFromNetwork() {
