@@ -1,12 +1,15 @@
 package com.igorr.weatheroutlook;
 
 import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -25,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
 import model.CurrentWeatherSchema;
+import network.NetworkPermitLiveData;
 import share.ActivityVKShare;
 
 public class MainActivity extends AppCompatActivity implements MainActionListener, LifecycleObserver {
@@ -43,17 +47,16 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //Листнер, если вдруг появится сеть (появляется даже тогда, когда вроде бы и не пропадала)
-        cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cm.addDefaultNetworkActiveListener(new ConnectivityManager.OnNetworkActiveListener() {
-                @Override
-                public void onNetworkActive() {
+        NetworkPermitLiveData permitNetwork = NetworkPermitLiveData.getInstance(this);
+        permitNetwork.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean != null && aBoolean) {
                     updateUI();
-                    Log.d("CM", String.valueOf(cm.getActiveNetworkInfo().isConnected()));
+                    Log.d("NETWORK", "данные обновлены");
                 }
-            });
-        }
+            }
+        });
 
         //Загрузить данные по городам
         CitiesRU.getInstance();
