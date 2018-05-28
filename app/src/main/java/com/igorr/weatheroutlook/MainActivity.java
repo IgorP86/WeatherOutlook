@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
 
     //request code
     private static final int RE_SHARE = 2;
-    private ConnectivityManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
