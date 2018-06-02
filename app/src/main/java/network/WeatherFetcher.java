@@ -50,7 +50,6 @@ public abstract class WeatherFetcher<T extends ResponseSchema>{
 
     public void getDataFromNetwork() {
         //создать Gson, настроить стратегию десереализации
-        //Для примера удалю из ответа несколько полей
         Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(
                 new ExclusionStrategy() {
                     @Override
