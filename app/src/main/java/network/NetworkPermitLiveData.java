@@ -12,9 +12,8 @@ public class NetworkPermitLiveData extends LiveData<Boolean> {
     private ConnectivityManager.OnNetworkActiveListener networkListener;
 
     public static NetworkPermitLiveData getInstance(Context context) {
-        if (singleton == null) {
-            return new NetworkPermitLiveData(context);
-        }
+        if (singleton == null)
+            singleton = new NetworkPermitLiveData(context);
         return singleton;
     }
 

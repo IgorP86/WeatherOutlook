@@ -1,14 +1,12 @@
 package com.igorr.weatheroutlook;
 
 import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.persistence.room.Room;
-import android.content.Context;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -23,11 +21,10 @@ import com.igorr.weatheroutlook.adapters.MyPagerAdapter;
 
 import java.util.List;
 
-import DBWeather.WeatherDB;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
-import model.CurrentWeatherSchema;
+import model.TEST_ViewModel;
 import network.NetworkPermitLiveData;
 import share.ActivityVKShare;
 
@@ -39,12 +36,16 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
 
     //request code
     private static final int RE_SHARE = 2;
+    TEST_ViewModel vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //Тест ViewModel
+        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(TEST_ViewModel.class);
 
         NetworkPermitLiveData permitNetwork = NetworkPermitLiveData.getInstance(this);
         permitNetwork.observe(this, new Observer<Boolean>() {
@@ -56,16 +57,19 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
                 }
             }
         });
-
         //Загрузить данные по городам
         CitiesRU.getInstance();
         //Подключить ViewPager
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager, true);
+        updateUI();
+
+        Log.d("ViewMODEL", vm.toString());
     }
 
     @Override
     public void updateUI() {
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager, true);
+        //Устаревший код обновления UI
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
         for (Fragment f : fragmentList) {
             if (f != null && f instanceof Updatable && f.isVisible()) {
