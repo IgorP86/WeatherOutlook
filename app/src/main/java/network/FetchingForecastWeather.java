@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.igorr.weatheroutlook.FragmentForecastOnFewDays;
+import com.igorr.weatheroutlook.Preferences;
 
 import model.ForecastResponseSchema;
 import retrofit2.Call;
@@ -15,7 +16,7 @@ public class FetchingForecastWeather extends WeatherFetcher<ForecastResponseSche
     private FragmentForecastOnFewDays uiFragment;
 
     public FetchingForecastWeather(Fragment uiFragment) {
-        super(uiFragment.getContext());
+        super(Preferences.getPreferableCityStr(uiFragment.getContext()));
         this.uiFragment = (FragmentForecastOnFewDays) uiFragment;
     }
 

@@ -2,11 +2,10 @@ package com.igorr.weatheroutlook;
 
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProvider.AndroidViewModelFactory;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -24,9 +23,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CitiesRU;
+import model.MyViewModelFactory;
 import model.TEST_ViewModel;
 import network.NetworkPermitLiveData;
 import share.ActivityVKShare;
+
 
 public class MainActivity extends AppCompatActivity implements MainActionListener, LifecycleObserver {
     @BindView(R.id.view_pager)
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
     private static final int RE_SHARE = 2;
     TEST_ViewModel vm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,19 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         ButterKnife.bind(this);
 
         //Тест ViewModel
-        vm = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(TEST_ViewModel.class);
+        vm = new ViewModelProvider(getViewModelStore(),
+                AndroidViewModelFactory.getInstance(getApplication())
+        ).get(TEST_ViewModel.class);
+
+        //vm = MyViewModelFactory.getFactory(getApplication()).create(TEST_ViewModel.class);
+        Log.d("ViewMODEL", vm.toString());
+
+        if (vm.getTEST_string() == null) {
+            Log.d("ViewMODEL", "null");
+            vm.setTEST_string("s");
+        } else {
+            Log.d("ViewMODEL", vm.getTEST_string());
+        }
 
         NetworkPermitLiveData permitNetwork = NetworkPermitLiveData.getInstance(this);
         permitNetwork.observe(this, new Observer<Boolean>() {
@@ -62,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements MainActionListene
         //Подключить ViewPager
         updateUI();
 
-        Log.d("ViewMODEL", vm.toString());
     }
 
     @Override

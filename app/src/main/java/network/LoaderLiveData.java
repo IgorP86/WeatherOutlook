@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.os.AsyncTask;
+import android.os.Handler;
 
 import com.igorr.weatheroutlook.Preferences;
 
@@ -16,55 +16,81 @@ import model.CurrentWeatherSchema;
 
 public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
     private static LoaderLiveData singleton;
-    private Context context;
+    private static Context context;
+    private static CurrentWeatherDB.DBHelper dbHelper;
+
+    private LoaderLiveData setContext(Context context) {
+        LoaderLiveData.context = context;
+        return this;
+    }
 
     public static LoaderLiveData getInstance(Context context) {
         if (singleton == null)
-            singleton = new LoaderLiveData(context);
-        return singleton;
+            singleton = new LoaderLiveData(context.getApplicationContext());
+        return singleton.setContext(context.getApplicationContext());
     }
 
     private LoaderLiveData(Context context) {
-        this.context = context;
+        LoaderLiveData.context = context;
     }
 
-    public void transfer(CurrentWeatherSchema toTransfer) {
+    public void showDataAndInsertInDB(CurrentWeatherSchema toTransfer) {
         postValue(toTransfer);
         //занести их в БД
-        CurrentWeatherDB.getDB(context).weatherDao().insert(toTransfer);
+        dbHelper.execute(CurrentWeatherDB.ACTION.INSERT_NOTE, toTransfer);
+    }
+
+    /**
+     * @param toTransfer данные, которые должны быть переданны наблюдателям
+     */
+    public void notifyObservers(CurrentWeatherSchema toTransfer) {
+        postValue(toTransfer);
     }
 
     @Override
     protected void onActive() {
         super.onActive();
+        dbHelper = new CurrentWeatherDB.DBHelper(context, new Handler());
+        dbHelper.start();
         getData();
     }
 
-    private void getData() {
-
-        //Получить город из настроек
-        long cityID = Preferences.getPreferableCityLong(context);
-        //проверить дату последней записи
-        long lastData = CurrentWeatherDB.getDB(context).weatherDao().queryGetLastResponseDataForCity(cityID);
-        long presentData = new Date().getTime();
-
-        //Если времени прошло > 3 часов, проверить сеть и пытаться загрузить
-        //если нет, грузить с БД
-        if ((float) (presentData / 1000 - lastData) / 3600 > 0.0) {
-            ConnectivityManager cm = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-            NetworkInfo networkInfo = cm != null ? cm.getActiveNetworkInfo() : null;
-
-            if (networkInfo != null && networkInfo.isConnected()) {
-                new FetchingCurrentWeather(context.getApplicationContext()).getDataFromNetwork();
-            } else {
-                getFromDB(CurrentWeatherDB.getDB(context), cityID);
-            }
-        } else {
-            getFromDB(CurrentWeatherDB.getDB(context), cityID);
-        }
+    @Override
+    protected void onInactive() {
+        super.onInactive();
+        dbHelper.quit();
+        //  dbHelper = null;
+        // context = null;
     }
 
-    private void getFromDB(CurrentWeatherDB db, long cityID) {
-        postValue(db.weatherDao().queryGetCurrentWeatherForCity(cityID));
+    private void getData() {
+        new Task().execute(Preferences.getPreferableCityLong(context));
+    }
+
+    private static class Task extends AsyncTask<Long, Void, Long> {
+
+        @Override
+        protected Long doInBackground(Long... cityID) {
+            return CurrentWeatherDB.getDB(context).weatherDao().queryGetLastResponseDataForCity(cityID[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Long lastData) {
+            super.onPostExecute(lastData);
+            long presentData = new Date().getTime();
+            if ((float) (presentData / 1000 - lastData) / 3600 >= 0.0) {
+                ConnectivityManager cm = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+                NetworkInfo networkInfo = cm != null ? cm.getActiveNetworkInfo() : null;
+
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    new FetchingCurrentWeather(context).getDataFromNetwork();
+                } else {
+                    dbHelper.execute(CurrentWeatherDB.ACTION.GET_CURRENT_WEATHER, null);
+                }
+            } else {
+                dbHelper.execute(CurrentWeatherDB.ACTION.GET_CURRENT_WEATHER, null);
+            }
+            // context = null;
+        }
     }
 }

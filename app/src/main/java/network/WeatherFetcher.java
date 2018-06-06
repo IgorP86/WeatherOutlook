@@ -1,19 +1,16 @@
 package network;
 
-import android.content.Context;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.igorr.weatheroutlook.Preferences;
 
 import model.ResponseSchema;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public abstract class WeatherFetcher<T extends ResponseSchema>{
+public abstract class WeatherFetcher<T extends ResponseSchema> {
     protected String cityID;
 
     //query params
@@ -43,9 +40,8 @@ public abstract class WeatherFetcher<T extends ResponseSchema>{
      */
     abstract String setRequestType();
 
-    public WeatherFetcher(Context context) {
-        //Город брать из настроек SharedPref
-        this.cityID = Preferences.getPreferableCityStr(context);
+    public WeatherFetcher(String cityID) {
+        this.cityID = cityID;
     }
 
     public void getDataFromNetwork() {
