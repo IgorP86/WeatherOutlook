@@ -15,5 +15,6 @@
     <string name="str_OKshare">в Ок</string>
     <string name="label_authorization">Авторизация</string>
     <string name="str_share">Поделиться</string>
-
+    <string name="str_select_city">Выберите город</string>
+    <string name="selector_hint_on_search">Введите название</string>
 </resources>

@@ -25,7 +25,7 @@ public class MyViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass == TEST_ViewModel.class) {
+        if (modelClass == CurrentWeatherViewModel.class) {
             try {
                 return modelClass.getConstructor(Application.class).newInstance(application);
             } catch (InstantiationException e) {

@@ -7,8 +7,8 @@ import android.os.Build;
 import android.util.Log;
 
 public class NetworkPermitLiveData extends LiveData<Boolean> {
-    private ConnectivityManager connectivityManager;
     private static NetworkPermitLiveData singleton;
+    private ConnectivityManager connectivityManager;
     private ConnectivityManager.OnNetworkActiveListener networkListener;
 
     public static NetworkPermitLiveData getInstance(Context context) {
@@ -21,12 +21,9 @@ public class NetworkPermitLiveData extends LiveData<Boolean> {
     private NetworkPermitLiveData(Context context) {
         this.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            networkListener = new ConnectivityManager.OnNetworkActiveListener() {
-                @Override
-                public void onNetworkActive() {
-                    postValue(true);
-                    Log.d("NETWORK", "сеть появилась");
-                }
+            networkListener = () -> {
+                postValue(true);
+                Log.d("NETWORK", "сеть появилась");
             };
         }
     }

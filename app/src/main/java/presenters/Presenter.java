@@ -33,7 +33,7 @@ public abstract class Presenter<T extends ResponseSchema> implements PresentData
     TextView[] labels;
 
     private Unbinder unbinder;
-    private View view;
+    private final View view;
 
     public Presenter(View viewContainer) {
         this.view = viewContainer;
@@ -57,7 +57,7 @@ public abstract class Presenter<T extends ResponseSchema> implements PresentData
 
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
         unbinder.unbind();
+        super.finalize();
     }
 }

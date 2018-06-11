@@ -12,32 +12,28 @@ import com.igorr.weatheroutlook.Preferences;
 import java.util.Date;
 
 import DBWeather.CurrentWeatherDB;
+import DBWeather.DBHelper;
 import model.CurrentWeatherSchema;
 
 public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
     private static LoaderLiveData singleton;
-    private static Context context;
-    private static CurrentWeatherDB.DBHelper dbHelper;
-
-    private LoaderLiveData setContext(Context context) {
-        LoaderLiveData.context = context;
-        return this;
-    }
+    private Context context;
+    private DBHelper dbHelper;
 
     public static LoaderLiveData getInstance(Context context) {
         if (singleton == null)
             singleton = new LoaderLiveData(context.getApplicationContext());
-        return singleton.setContext(context.getApplicationContext());
+        return singleton;
     }
 
     private LoaderLiveData(Context context) {
-        LoaderLiveData.context = context;
+        this.context = context;
     }
 
     public void showDataAndInsertInDB(CurrentWeatherSchema toTransfer) {
         postValue(toTransfer);
         //занести их в БД
-        dbHelper.execute(CurrentWeatherDB.ACTION.INSERT_NOTE, toTransfer);
+        dbHelper.execute(DBHelper.ACTION.INSERT_NOTE, toTransfer);
     }
 
     /**
@@ -50,7 +46,7 @@ public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
     @Override
     protected void onActive() {
         super.onActive();
-        dbHelper = new CurrentWeatherDB.DBHelper(context, new Handler());
+        dbHelper = new DBHelper(context, new Handler());
         dbHelper.start();
         getData();
     }
@@ -67,7 +63,7 @@ public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
         new Task().execute(Preferences.getPreferableCityLong(context));
     }
 
-    private static class Task extends AsyncTask<Long, Void, Long> {
+    private class Task extends AsyncTask<Long, Void, Long> {
 
         @Override
         protected Long doInBackground(Long... cityID) {
@@ -85,12 +81,11 @@ public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
                 if (networkInfo != null && networkInfo.isConnected()) {
                     new FetchingCurrentWeather(context).getDataFromNetwork();
                 } else {
-                    dbHelper.execute(CurrentWeatherDB.ACTION.GET_CURRENT_WEATHER, null);
+                    dbHelper.execute(DBHelper.ACTION.GET_CURRENT_WEATHER);
                 }
             } else {
-                dbHelper.execute(CurrentWeatherDB.ACTION.GET_CURRENT_WEATHER, null);
+                dbHelper.execute(DBHelper.ACTION.GET_CURRENT_WEATHER);
             }
-            // context = null;
         }
     }
 }

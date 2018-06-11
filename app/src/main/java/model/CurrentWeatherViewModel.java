@@ -3,14 +3,19 @@ package model;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
-public class TEST_ViewModel extends AndroidViewModel {
+public class CurrentWeatherViewModel extends AndroidViewModel {
     private String TEST_string;
+    private CurrentWeatherSchema currentWeatherSchema;
 
-    public TEST_ViewModel(@NonNull Application application) {
+
+    public CurrentWeatherViewModel(@NonNull Application application) {
         super(application);
     }
+
+
 
     @Override
     protected void onCleared() {
