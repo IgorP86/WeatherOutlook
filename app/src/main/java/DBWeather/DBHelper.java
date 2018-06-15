@@ -1,5 +1,6 @@
 package DBWeather;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 
 import model.CurrentWeatherSchema;
+import model.CurrentWeatherViewModel;
 import network.LoaderLiveData;
 
 import static DBWeather.CurrentWeatherDB.getDB;
@@ -71,6 +73,8 @@ public class DBHelper extends HandlerThread {
                             return false;
                         case GET_CURRENT_WEATHER:
                             final CurrentWeatherSchema data = getCurrentWeatherForCity(getPreferableCityLong(context));
+
+                            Log.d("Snackbar", "case GET_CURRENT_WEATHER:");
                             responseHandler.post(() -> LoaderLiveData.getInstance(context).notifyObservers(data));
                             return false;
                     }

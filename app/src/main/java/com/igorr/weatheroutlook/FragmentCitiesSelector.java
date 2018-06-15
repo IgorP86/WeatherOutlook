@@ -1,68 +1,128 @@
 package com.igorr.weatheroutlook;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
-import model.CitiesRU;
+import java.util.List;
 
-public class FragmentCitiesSelector extends DialogFragment {
-    private static final String DIALOG_TITLE = "Выберите город";
-    private static final String OK_BUTTON = "Запомнить выбор";
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import model.CitiesViewModel;
+import model.CitySchema;
 
-    private MainActionListener parentListener;
-    private View viewDialog;
-    private Activity parent;
+public class FragmentCitiesSelector extends Fragment {
 
+    private View view;
+    private AppCompatActivity parent;
+    private Unbinder unbinder;
+    private CitiesViewModel citiesViewModel;
+    private static final long DEFAULT_CITY_ID = 511565L;
+
+    @BindView(R.id.toolbar_selector_fragment)
+    Toolbar toolbar;
+    @BindView(R.id.r_group)
+    RadioGroup radioGroup;
+    @BindView(R.id.search_view)
+    SearchView searchView;
+    @BindView(R.id.tv_search_result)
+    TextView textViewSearchRes;
+
+    @Nullable
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            parentListener = (MainActionListener) context;
-        } catch (Exception e) {
-            Log.d("CardView", "onAttach" + e.toString());
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return view = inflater.inflate(R.layout.fragment_cities_selector, container, false);
     }
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+        parent = (AppCompatActivity) getActivity();
 
-        Log.d("Dialog","onCreateDialog");
-        parent = getActivity();
-        viewDialog = LayoutInflater.from(parent).inflate(R.layout.dialog_cities_selector, null);
+        if (parent != null) {
+            parent.setSupportActionBar(toolbar);
+            ActionBar actionBar = parent.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+        setHasOptionsMenu(true);
+        citiesViewModel = new ViewModelProvider(parent.getViewModelStore(), new ViewModelProvider.NewInstanceFactory())
+                .get(CitiesViewModel.class);
+        searchView.setOnQueryTextListener(citiesViewModel);
 
-        final RadioGroup radioGroup = viewDialog.findViewById(R.id.r_group);
-        for (CitiesRU.City c : CitiesRU.getCitiesRu()) {
+        //Загрузить весь список полученный из БД
+        makeRadioGroup(citiesViewModel.getAllAvailableCities());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //Запомнить выбор и вернуться на главный экран
+            Preferences.setPreferableCity(getContext(),
+                    radioGroup.getCheckedRadioButtonId() != -1 ? radioGroup.getCheckedRadioButtonId() : DEFAULT_CITY_ID);
+            Log.d("Snackbar", String.valueOf(parent.getSupportFragmentManager().getFragments().size()));
+            parent.getSupportFragmentManager().popBackStack();
+        }
+        return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Подписаться на изменения в списке
+        citiesViewModel.getCityListLiveData().observe(this, (newCitiesList) -> {
+            radioGroup.removeAllViews();
+            if (newCitiesList != null && newCitiesList.size() != 0) {
+                textViewSearchRes.setVisibility(View.INVISIBLE);
+                makeRadioGroup(newCitiesList);
+            } else {
+                textViewSearchRes.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void makeRadioGroup(List<CitySchema> newCitiesList) {
+        for (CitySchema c : newCitiesList) {
             RadioButton rb = new RadioButton(getContext());
             rb.setText(c.getCityName());
             rb.setId(Integer.parseInt(c.getCityId()));
             radioGroup.addView(rb);
         }
+    }
 
-        return new AlertDialog.Builder(parent)
-                .setView(viewDialog)
-                .setTitle(R.string.str_select_city)
-                .setPositiveButton(OK_BUTTON, (dialog, which) -> {
-                    //Сохранить в настройках выбор города
-                    long selectedID = radioGroup.getCheckedRadioButtonId();
-                    Preferences.setPreferableCity(getContext(), selectedID);
-                    parentListener.updateUI();
-                })
-                .create();
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
+
+    @OnClick(R.id.fab_add_new_city)
+    protected void onFabClick() {
+        new DialogAddNewCity().show(getChildFragmentManager(),"");
     }
 }
+
+
+
+
+

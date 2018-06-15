@@ -21,6 +21,6 @@ public class Preferences {
     }
 
     public static long getPreferableCityLong(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getLong(CITY_ID,DEFAULT_CITY_ID);
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(CITY_ID, DEFAULT_CITY_ID);
     }
 }

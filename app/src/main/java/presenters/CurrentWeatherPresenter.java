@@ -8,7 +8,6 @@ import com.igorr.weatheroutlook.R;
 
 import java.text.SimpleDateFormat;
 
-import model.CitiesRU;
 import model.CurrentWeatherSchema;
 import model.ResponseSchema;
 
@@ -16,8 +15,8 @@ import static network.WeatherFetcher.BASE_API_URL;
 import static network.WeatherFetcher.IMAGE;
 import static network.WeatherFetcher.PNG;
 
-public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
-    public CurrentPresenter(View viewContainer) {
+public class CurrentWeatherPresenter extends Presenter<CurrentWeatherSchema> {
+    public CurrentWeatherPresenter(View viewContainer) {
         super(viewContainer);
     }
 
@@ -27,7 +26,7 @@ public class CurrentPresenter extends Presenter<CurrentWeatherSchema> {
         //Флаг
         imageFlag.setImageDrawable(findFlag(re.getSys().getCountry()));
         //Название города
-        tvCityName.setText(CitiesRU.findCityById(re.getCityId()));
+        tvCityName.setText(re.getCityName());
 
         //время последнего обновления
         tvTemperatureGroup[0].setText(new java.text.SimpleDateFormat("HH:mm").format(re.getLastResponseData()*1000));
