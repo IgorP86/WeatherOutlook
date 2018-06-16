@@ -37,7 +37,6 @@ public class CurrentWeatherSchema extends ResponseSchema {
     private String base;                //Internal parameter
     @Ignore
     private Clouds clouds;
-    @Ignore
     @SerializedName("name")
     private String cityName;            //City cityName
     @Ignore
@@ -109,6 +108,10 @@ public class CurrentWeatherSchema extends ResponseSchema {
 
     public void setSys(Sys sys) {
         this.sys = sys;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }
 

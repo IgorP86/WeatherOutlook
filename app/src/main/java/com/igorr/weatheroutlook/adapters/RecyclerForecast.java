@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.igorr.weatheroutlook.R;
 
 import model.ForecastResponseSchema;
-import presenters.ForecastPresenter;
+import presenters.ForecastWeatherPresenter;
 import presenters.PresentData;
 
 public class RecyclerForecast extends RecyclerView.Adapter<ForecastHolder> {
@@ -48,6 +48,6 @@ class ForecastHolder extends RecyclerView.ViewHolder {
 
     public ForecastHolder(View itemView) {
         super(itemView);
-        presenter = new ForecastPresenter(itemView);
+        presenter = new ForecastWeatherPresenter(itemView);
     }
 }

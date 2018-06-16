@@ -29,7 +29,6 @@ public class FetchingCurrentWeather extends WeatherFetcher<CurrentWeatherSchema>
             @Override
             public void onResponse(@NonNull Call<CurrentWeatherSchema> call, @NonNull Response<CurrentWeatherSchema> response) {
                 if (response.isSuccessful()) {
-                    //Передать в LiveData полученные данные
                     LoaderLiveData.getInstance(context).showDataAndInsertInDB(response.body());
                 }
             }

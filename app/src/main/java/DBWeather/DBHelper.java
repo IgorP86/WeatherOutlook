@@ -1,5 +1,6 @@
 package DBWeather;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 
 import model.CurrentWeatherSchema;
+import model.CurrentWeatherViewModel;
 import network.LoaderLiveData;
 
 import static DBWeather.CurrentWeatherDB.getDB;
@@ -30,7 +32,7 @@ public class DBHelper extends HandlerThread {
 
     public DBHelper(Context context, Handler handler) {
         super(THREAD_NAME);
-        this.context = context;
+        this.context = context.getApplicationContext();
         responseHandler = handler;
     }
 
@@ -71,7 +73,7 @@ public class DBHelper extends HandlerThread {
                             return false;
                         case GET_CURRENT_WEATHER:
                             final CurrentWeatherSchema data = getCurrentWeatherForCity(getPreferableCityLong(context));
-                            responseHandler.post(() -> LoaderLiveData.getInstance(context).notifyObservers(data));
+                            responseHandler.sendMessage(responseHandler.obtainMessage(0,data));
                             return false;
                     }
                 }

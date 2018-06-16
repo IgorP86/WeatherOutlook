@@ -1,13 +1,10 @@
 package com.igorr.weatheroutlook.adapters;
 
-import android.database.DataSetObserver;
-import android.support.annotation.NonNull;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
-import android.view.ViewGroup;
 
 import com.igorr.weatheroutlook.FragmentCurrentWeather;
 import com.igorr.weatheroutlook.FragmentForecastOnFewDays;
@@ -17,7 +14,7 @@ import java.util.List;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragments;
-    private String[] PAGE_TITLES = {"Погода сейчас", "Погода завтра"};
+    private String[] PAGE_TITLES = {"Сегодня", "Прогноз"};
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -26,30 +23,26 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     private void setupPages() {
-        //ЗАдать набор фрагментов
         fragments.add(new FragmentCurrentWeather());
         fragments.add(new FragmentForecastOnFewDays());
     }
 
     @Override
-    public void startUpdate(ViewGroup container) {
-        Log.d("PAGER","startUpdate");
-        super.startUpdate(container);
-    }
-
-    @Override
     public Fragment getItem(int position) {
+        fragments.get(position).getView();
         return fragments.get(position);
     }
 
     @Override
     public int getCount() {
+        fragments.get(0).getView();
         return fragments.size();
     }
 
     @Nullable
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(int position){
+        fragments.get(0).getView();
         return PAGE_TITLES[position];
     }
 }

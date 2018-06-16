@@ -16,5 +16,6 @@
     <string name="label_authorization">Авторизация</string>
     <string name="str_share">Поделиться</string>
     <string name="str_select_city">Выберите город</string>
-    <string name="selector_hint_on_search">Введите название</string>
+    <string name="selector_hint_on_search">Населенный пункт</string>
+    <string name="nothing_to_set">Ничего не найдено</string>
 </resources>
