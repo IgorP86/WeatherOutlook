@@ -73,13 +73,7 @@ public class DBHelper extends HandlerThread {
                             return false;
                         case GET_CURRENT_WEATHER:
                             final CurrentWeatherSchema data = getCurrentWeatherForCity(getPreferableCityLong(context));
-
                             responseHandler.sendMessage(responseHandler.obtainMessage(0,data));
-
-                            Runnable r = () -> LoaderLiveData.getInstance(context).notifyObservers(data);
-                            Log.d("Snackbar", "case GET_CURRENT_WEATHER:");
-                            responseHandler.post(r);
-                            responseHandler.removeCallbacks(r);
                             return false;
                     }
                 }
