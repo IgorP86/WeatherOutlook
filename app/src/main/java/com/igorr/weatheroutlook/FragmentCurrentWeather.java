@@ -15,6 +15,7 @@ public class FragmentCurrentWeather extends Fragment {
     CurrentWeatherObs observer;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("Snackbar","onCreateView");
         return inflater.inflate(R.layout.fragment_current_weather, container, false);
     }
 

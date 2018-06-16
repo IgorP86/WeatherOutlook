@@ -32,7 +32,7 @@ public class DBHelper extends HandlerThread {
 
     public DBHelper(Context context, Handler handler) {
         super(THREAD_NAME);
-        this.context = context;
+        this.context = context.getApplicationContext();
         responseHandler = handler;
     }
 
@@ -74,8 +74,12 @@ public class DBHelper extends HandlerThread {
                         case GET_CURRENT_WEATHER:
                             final CurrentWeatherSchema data = getCurrentWeatherForCity(getPreferableCityLong(context));
 
+                            responseHandler.sendMessage(responseHandler.obtainMessage(0,data));
+
+                            Runnable r = () -> LoaderLiveData.getInstance(context).notifyObservers(data);
                             Log.d("Snackbar", "case GET_CURRENT_WEATHER:");
-                            responseHandler.post(() -> LoaderLiveData.getInstance(context).notifyObservers(data));
+                            responseHandler.post(r);
+                            responseHandler.removeCallbacks(r);
                             return false;
                     }
                 }

@@ -79,7 +79,6 @@ public class MainFragment extends Fragment {
         viewModel.getPermitLiveData().observe(this, (aBoolean) -> {
             if (aBoolean != null && aBoolean) {
                 updateUI();
-                Log.d("UpdateUI", "данные обновлены");
             }
         });
         updateUI();
@@ -112,6 +111,7 @@ public class MainFragment extends Fragment {
     }
 
     private void updateUI() {
+        Log.d("Snackbar", " updateUI()");
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager, true);
 

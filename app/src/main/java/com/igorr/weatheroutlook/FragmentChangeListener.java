@@ -3,9 +3,9 @@ package com.igorr.weatheroutlook;
 public interface FragmentChangeListener {
     void changeScreen(ChangeTo changeTo);
 
-    enum ChangeTo{
+    enum ChangeTo {
         MAIN_FRAGMENT,
         CITIES_SELECTOR,
-        SHARE_ON_VKONTAKTE
+        SHARE_ON_VKONTAKTE;
     }
 }

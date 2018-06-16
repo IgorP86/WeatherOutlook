@@ -88,7 +88,6 @@ public class FragmentCitiesSelector extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         //Подписаться на изменения в списке
         citiesViewModel.getCityListLiveData().observe(this, (newCitiesList) -> {
             radioGroup.removeAllViews();

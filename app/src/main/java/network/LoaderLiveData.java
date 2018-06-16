@@ -1,13 +1,15 @@
 package network;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.igorr.weatheroutlook.Preferences;
 
@@ -35,23 +37,39 @@ public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
     }
 
     public void showDataAndInsertInDB(CurrentWeatherSchema forTransfer) {
-        postValue(forTransfer);
-        //занести их в БД
-        dbHelper.execute(DBHelper.ACTION.INSERT_NOTE, forTransfer);
+        if (forTransfer != null) {
+            postValue(forTransfer);
+            //занести их в БД
+            dbHelper.execute(DBHelper.ACTION.INSERT_NOTE, forTransfer);
+        }
     }
+
+
+    private String MSG_ERROR_IN_RECEIVING_DATA = "Нет соединения, данные не найдены";
 
     /**
      * @param forTransfer данные, которые должны быть переданны наблюдателям
      */
     public void notifyObservers(CurrentWeatherSchema forTransfer) {
         Log.d("Snackbar", "notifyObservers");
-        postValue(forTransfer);
+        if (forTransfer != null) {
+            setValue(forTransfer);
+        } else {
+            Toast t = Toast.makeText(context, MSG_ERROR_IN_RECEIVING_DATA, Toast.LENGTH_LONG);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
+        }
+
     }
 
     @Override
     protected void onActive() {
+        Log.d("Snackbar", "onActive");
         super.onActive();
-        dbHelper = new DBHelper(context, new Handler());
+        dbHelper = new DBHelper(context, new Handler(msg -> {
+            notifyObservers((CurrentWeatherSchema) msg.obj);
+            return false;
+        }));
         dbHelper.start();
         getData();
     }
@@ -65,8 +83,6 @@ public class LoaderLiveData extends LiveData<CurrentWeatherSchema> {
     private void getData() {
         new Task(context, dbHelper).execute(Preferences.getPreferableCityLong(context));
     }
-
-
 }
 
 class Task extends AsyncTask<Long, Void, Long> {
