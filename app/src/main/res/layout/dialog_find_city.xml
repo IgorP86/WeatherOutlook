@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="@string/selector_hint_on_search"
+        android:hint="@string/selector_hint_for_search"
         android:gravity="center"
         />
 

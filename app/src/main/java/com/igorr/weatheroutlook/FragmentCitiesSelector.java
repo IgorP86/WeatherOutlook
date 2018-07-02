@@ -4,13 +4,13 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import model.CitiesViewModel;
-import model.CitySchema;
+import cities_data.CitiesViewModel;
+import cities_data.CitySchema;
 
 public class FragmentCitiesSelector extends Fragment {
 
@@ -35,6 +36,10 @@ public class FragmentCitiesSelector extends Fragment {
     private Unbinder unbinder;
     private CitiesViewModel citiesViewModel;
     private static final long DEFAULT_CITY_ID = 511565L;
+    private static final String INPUT_MISTAKE = "Населеного пункта с таким именем не существует";
+    private static final String UNKNOWN_MISTAKE = "Неизвестная ошибка!";
+    private static final String LIST_UPDATED = "Данные в списке городов обновлены";
+
 
     @BindView(R.id.toolbar_selector_fragment)
     Toolbar toolbar;
@@ -65,12 +70,10 @@ public class FragmentCitiesSelector extends Fragment {
             }
         }
         setHasOptionsMenu(true);
-        citiesViewModel = new ViewModelProvider(parent.getViewModelStore(), new ViewModelProvider.NewInstanceFactory())
+        citiesViewModel = new ViewModelProvider(parent.getViewModelStore(), new ViewModelProvider.AndroidViewModelFactory(parent.getApplication()))
                 .get(CitiesViewModel.class);
         searchView.setOnQueryTextListener(citiesViewModel);
 
-        //Загрузить весь список полученный из БД
-        makeRadioGroup(citiesViewModel.getAllAvailableCities());
     }
 
     @Override
@@ -79,7 +82,6 @@ public class FragmentCitiesSelector extends Fragment {
             //Запомнить выбор и вернуться на главный экран
             Preferences.setPreferableCity(getContext(),
                     radioGroup.getCheckedRadioButtonId() != -1 ? radioGroup.getCheckedRadioButtonId() : DEFAULT_CITY_ID);
-            Log.d("Snackbar", String.valueOf(parent.getSupportFragmentManager().getFragments().size()));
             parent.getSupportFragmentManager().popBackStack();
         }
         return true;
@@ -89,7 +91,7 @@ public class FragmentCitiesSelector extends Fragment {
     public void onResume() {
         super.onResume();
         //Подписаться на изменения в списке
-        citiesViewModel.getCityListLiveData().observe(this, (newCitiesList) -> {
+        citiesViewModel.getListUpdatedLive().observe(this, (newCitiesList) -> {
             radioGroup.removeAllViews();
             if (newCitiesList != null && newCitiesList.size() != 0) {
                 textViewSearchRes.setVisibility(View.INVISIBLE);
@@ -98,14 +100,33 @@ public class FragmentCitiesSelector extends Fragment {
                 textViewSearchRes.setVisibility(View.VISIBLE);
             }
         });
+
+        //Еще одна liveData
+        citiesViewModel.getDataReceivedLive().observe(this, (citySchema) -> {
+            Toast message = Toast.makeText(getContext()
+                    , citySchema != null ?
+                            (citiesViewModel.initialization() ? LIST_UPDATED : UNKNOWN_MISTAKE) : INPUT_MISTAKE
+                    , Toast.LENGTH_LONG);
+            message.setGravity(Gravity.CENTER, 0, 0);
+            message.show();
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        citiesViewModel.getDataReceivedLive().removeObservers(this);
+        citiesViewModel.getListUpdatedLive().removeObservers(this);
     }
 
     private void makeRadioGroup(List<CitySchema> newCitiesList) {
+        int i = 0;
         for (CitySchema c : newCitiesList) {
             RadioButton rb = new RadioButton(getContext());
             rb.setText(c.getCityName());
-            rb.setId(Integer.parseInt(c.getCityId()));
+            rb.setId(c.getPrimaryKey());
             radioGroup.addView(rb);
+            Log.d("NUMBER", String.valueOf(i++));
         }
     }
 
@@ -117,11 +138,6 @@ public class FragmentCitiesSelector extends Fragment {
 
     @OnClick(R.id.fab_add_new_city)
     protected void onFabClick() {
-        new DialogAddNewCity().show(getChildFragmentManager(),"");
+        new DialogAddNewCity().show(getChildFragmentManager(), "");
     }
 }
-
-
-
-
-

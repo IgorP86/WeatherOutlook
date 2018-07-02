@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +19,10 @@ import android.view.ViewGroup;
 
 import com.igorr.weatheroutlook.adapters.MyPagerAdapter;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import model.NetworkViewModel;
+import weather_network.NetworkPermitViewModel;
 
 public class MainFragment extends Fragment {
     @BindView(R.id.view_pager)
@@ -36,7 +33,7 @@ public class MainFragment extends Fragment {
     private Unbinder unbinder;
     private View view;
     private FragmentChangeListener fragmentChangeListener;
-    private NetworkViewModel viewModel;
+    private NetworkPermitViewModel networkPermitViewModel;
 
     @Override
     public void onAttach(Context context) {
@@ -46,7 +43,6 @@ public class MainFragment extends Fragment {
         } catch (Exception e) {
             Log.d("", "onAttach" + e.toString());
         }
-
     }
 
     @Override
@@ -61,9 +57,6 @@ public class MainFragment extends Fragment {
         parent = (AppCompatActivity) getActivity();
         if (parent != null) {
             parent.setSupportActionBar(parent.findViewById(R.id.toolbar_main_fragment));
-            ActionBar actionBar = parent.getSupportActionBar();
-            if (actionBar != null)
-                actionBar.setTitle("название");
         }
         setHasOptionsMenu(true);
     }
@@ -72,11 +65,11 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        viewModel = new ViewModelProvider(parent.getViewModelStore(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(parent.getApplication())
-        ).get(NetworkViewModel.class);
+        networkPermitViewModel = new ViewModelProvider(parent.getViewModelStore()
+                , new ViewModelProvider.AndroidViewModelFactory(parent.getApplication()))
+                .get(NetworkPermitViewModel.class);
 
-        viewModel.getPermitLiveData().observe(this, (aBoolean) -> {
+        networkPermitViewModel.getPermitLiveData().observe(this, (aBoolean) -> {
             if (aBoolean != null && aBoolean) {
                 updateUI();
             }
@@ -87,7 +80,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        viewModel.getPermitLiveData().removeObservers(this);
+        networkPermitViewModel.getPermitLiveData().removeObservers(this);
     }
 
     @Override
@@ -111,17 +104,8 @@ public class MainFragment extends Fragment {
     }
 
     private void updateUI() {
-        Log.d("Snackbar", " updateUI()");
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager, true);
-
-        //Устаревший код обновления UI
-        List<Fragment> fragmentList = parent.getSupportFragmentManager().getFragments();
-        for (Fragment f : fragmentList) {
-            if (f != null && f instanceof Updatable && f.isVisible()) {
-                ((Updatable) f).updateContent();
-            }
-        }
     }
 
     @Override

@@ -5,6 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 
 import com.igorr.weatheroutlook.FragmentCurrentWeather;
 import com.igorr.weatheroutlook.FragmentForecastOnFewDays;
@@ -29,7 +35,6 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        fragments.get(position).getView();
         return fragments.get(position);
     }
 
@@ -41,7 +46,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     @Nullable
     @Override
-    public CharSequence getPageTitle(int position){
+    public CharSequence getPageTitle(int position) {
         fragments.get(0).getView();
         return PAGE_TITLES[position];
     }

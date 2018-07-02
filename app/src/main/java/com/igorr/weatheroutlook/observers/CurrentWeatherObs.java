@@ -6,22 +6,21 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelStore;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import model.CurrentWeatherSchema;
-import model.CurrentWeatherViewModel;
-import presenters.CurrentWeatherPresenter;
+import ui_presenters.CurrentWeatherPresenter;
+import weather_data.CurrentWeatherSchema;
+import weather_data.CurrentWeatherViewModel;
 
 public class CurrentWeatherObs implements LifecycleObserver {
     private Fragment fragment;
     private View view;
     private CurrentWeatherViewModel viewModel;
     private Observer<CurrentWeatherSchema> observer;
+    private String MSG_ERROR_IN_RECEIVING_DATA = "Нет соединения, данные не найдены";
 
     public CurrentWeatherObs(Fragment fragment) {
         this.fragment = fragment;
@@ -37,7 +36,10 @@ public class CurrentWeatherObs implements LifecycleObserver {
         observer = schema -> {
             if (schema != null) {
                 new CurrentWeatherPresenter(view).fillData(schema, fragment);
-                Log.d("Snackbar", "fillData(schema, fragment);");
+            } else {
+                Toast t = Toast.makeText(fragment.getContext(), MSG_ERROR_IN_RECEIVING_DATA, Toast.LENGTH_LONG);
+                t.setGravity(Gravity.CENTER, 0, 0);
+                t.show();
             }
         };
     }

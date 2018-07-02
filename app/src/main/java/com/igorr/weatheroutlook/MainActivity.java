@@ -6,40 +6,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import share.ActivityVKShare;
+import share_data.ActivityVKShare;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentChangeListener {
     //request code
     private static final int RE_SHARE = 2;
     private static final ChangeTo defaultFragment = ChangeTo.MAIN_FRAGMENT;
-    private static final String TAG_MAIN_FRAGMENT = "main";
-    private static final String TAG_CITIES_SELECTOR = "selector";
-    private static final String TAG_KEY = "tag_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_host);
 
-        //Восстановить фрагемент
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getString(TAG_KEY) != null) {
-                getSupportFragmentManager().beginTransaction().show(
-                        getSupportFragmentManager().findFragmentByTag(savedInstanceState.getString(TAG_KEY))
-                ).commit();
-            }
-        } else changeScreen(defaultFragment);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        for (Fragment f : getSupportFragmentManager().getFragments()) {
-            if (f.isVisible()) {
-                outState.putString(TAG_KEY, f.getTag());
-                break;
-            }
+        if (getSupportFragmentManager().getFragments().size() == 0) {
+            changeScreen(defaultFragment);
         }
     }
 
@@ -47,11 +28,11 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     public void changeScreen(ChangeTo changeTo) {
         switch (changeTo) {
             case MAIN_FRAGMENT:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new MainFragment(), TAG_MAIN_FRAGMENT)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new MainFragment())
                         .commit();
                 break;
             case CITIES_SELECTOR:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new FragmentCitiesSelector(), TAG_CITIES_SELECTOR)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new FragmentCitiesSelector())
                         .addToBackStack(null)
                         .commit();
                 break;

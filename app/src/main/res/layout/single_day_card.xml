@@ -3,66 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="wrap_content"
+    style="@style/Theme.AppCompat.Light"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:theme="@style/Theme.AppCompat.Light"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="20dp"
+    android:layout_margin="15dp"
+    app:cardCornerRadius="35dp"
+    app:cardElevation="50dp"
     app:contentPadding="10dp"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.2"
-    tools:theme="@style/CardView">
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/my_ripple_eff"
+        android:clickable="true"
+        android:focusable="true">
 
-
-        <LinearLayout
-            android:id="@+id/location_name"
+        <TextView
+            android:id="@+id/tv_city_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/line"
-            android:showDividers="middle"
+            android:gravity="start|center_vertical"
+            android:padding="6dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/temperature_now"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/image_country_flag"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="4dp"
-                tools:background="@drawable/ic_launcher_background"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/tv_city_name"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:textSize="24sp"
-                tools:text="Пенза" />
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Пенза" />
 
         <TableLayout
             android:id="@+id/temperature_now"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/location_name">
-
+            app:layout_constraintTop_toBottomOf="@id/tv_city_name">
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -74,6 +56,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="20dp"
                     android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_shape"
+                    android:elevation="10dp"
                     android:text="@string/str_temperature"
                     android:textSize="18sp" />
 
@@ -110,31 +94,19 @@
 
         </TableLayout>
 
-        <LinearLayout
-            android:id="@+id/weather_type"
+        <TextView
+            android:id="@+id/tv_weatherCondition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical|start"
+            android:padding="3dp"
+            android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/temperature_now">
-
-            <ImageView
-                android:id="@+id/img_sky"
-                android:layout_width="70dp"
-                android:layout_height="70dp" />
-
-            <TextView
-                android:id="@+id/tv_weatherCondition"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center|start"
-                android:padding="3dp"
-                android:textSize="26sp"
-                tools:text="Ясно-неясно" />
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/temperature_now"
+            tools:text="Ясно-неясно" />
 
         <LinearLayout
             android:id="@+id/wind_compass"
@@ -142,12 +114,12 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/weather_type">
+            app:layout_constraintTop_toBottomOf="@id/tv_weatherCondition">
 
             <ImageView
                 android:id="@+id/img_wind_direction"
-                android:layout_width="70dp"
-                android:layout_height="70dp" />
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
 
             <TextView
                 android:id="@+id/tv_wind_speed"
@@ -155,7 +127,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:gravity="center|start"
+                android:gravity="right"
                 android:padding="3dp"
                 android:textSize="22sp"
                 tools:text="Ветер-штиль м/c" />
