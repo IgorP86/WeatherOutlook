@@ -1,6 +1,7 @@
 package com.igorr.weatheroutlook;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -125,6 +126,9 @@ public class FragmentCitiesSelector extends Fragment {
             RadioButton rb = new RadioButton(getContext());
             rb.setText(c.getCityName());
             rb.setId(c.getPrimaryKey());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                rb.setTextAppearance(R.style.MyStyle);
+            }
             radioGroup.addView(rb);
             Log.d("NUMBER", String.valueOf(i++));
         }
