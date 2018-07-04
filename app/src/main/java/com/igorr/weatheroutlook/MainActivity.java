@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
         setContentView(R.layout.activity_main_host);
 
         if (getSupportFragmentManager().getFragments().size() == 0) {
-          //  changeScreen(defaultFragment);
+            changeScreen(defaultFragment);
         }
     }
 
@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     public void changeScreen(ChangeTo changeTo) {
         switch (changeTo) {
             case MAIN_FRAGMENT:
-              /*  getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new MainFragment())
-                        .commit();*/
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new MainFragment())
+                        .commit();
                 break;
             case CITIES_SELECTOR:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_host, new FragmentCitiesSelector())
